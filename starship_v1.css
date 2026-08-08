@@ -1,0 +1,803 @@
+body {
+    margin: 0;
+    background: #09111a;
+    color: #fff;
+    font-family: Segoe UI;
+}
+
+canvas {
+    display: block;
+}
+
+#graphTimeline {
+    position: fixed;
+    z-index: 4;
+    top: 352px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 340px;
+    color: #8fb9da;
+    font: 600 11px Segoe UI;
+}
+
+#graphTimeline input {
+    flex: 1;
+    min-width: 0;
+}
+
+#activeControllerIndicator {
+    position: fixed;
+    z-index: 4;
+    top: 316px;
+    right: 18px;
+    width: 340px;
+    box-sizing: border-box;
+    min-height: 28px;
+    padding: 6px 8px;
+    border: 1px solid rgba(74, 151, 196, 0.55);
+    background: rgba(7, 16, 25, 0.92);
+    color: #b9e7ff;
+    font: 600 10px/16px Segoe UI, sans-serif;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/*
+ * The SpaceX telemetry strip uses the bottom 138 px of the canvas. Anchor
+ * this DOM panel above it (with an 18 px gutter), rather than over its
+ * engine/status readouts.
+ */
+#instanceTracker { position: fixed; z-index: 6; right: 18px; bottom: 156px; width: 340px; box-sizing: border-box; padding: 8px; border: 1px solid rgba(74,151,196,.6); border-radius: 7px; background: rgba(5,14,23,.94); pointer-events: auto; }
+.instanceTrackerHeader { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+.instanceTrackerTitle { color: #ffd166; font: 700 10px Segoe UI, sans-serif; letter-spacing: .08em; }
+#instanceTrackerToggleBtn { margin: 0; min-height: 22px; padding: 2px 6px; font-size: 10px; }
+#instanceTracker.is-collapsed { width: auto; padding: 6px 8px; }
+#instanceTracker.is-collapsed .instanceTrackerHeader { margin: 0; }
+#instanceTracker.is-collapsed #instanceTrackerList { display: none; }
+#instanceTrackerList { display: grid; gap: 5px; }
+.instanceCard { display: grid; grid-template-columns: 50px 1fr auto; align-items: center; gap: 8px; width: 100%; min-height: 58px; margin: 0; padding: 4px 6px; box-sizing: border-box; border: 1px solid #315b79; border-radius: 5px; background: #0b1d2b; color: #d9f3ff; cursor: pointer; text-align: left; }
+.instanceCard:hover, .instanceCard.is-followed { border-color: #79f5cd; background: #123244; }
+.instanceCard canvas { width: 46px; height: 52px; }
+.instanceCardName, .instanceCardMeta { display: block; }
+.instanceCardName { font: 700 12px Segoe UI, sans-serif; }
+.instanceCardMeta { margin-top: 2px; color: #8fb9da; font: 600 10px ui-monospace, monospace; }
+.instanceCardFollow { color: #79f5cd; font: 700 10px Segoe UI, sans-serif; }
+
+#hud {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    background: rgba(0, 0, 0, 0.85);
+    padding: 10px;
+    border-radius: 8px;
+    width: 250px;
+    max-height: 95vh;
+    overflow: auto;
+    transition: width .2s ease, padding .2s ease;
+}
+
+.hudHeader { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+.hudHeader h3 { margin: 0; font-size: 15px; }
+.simulationSpeedIndicator { display: block; margin-top: 3px; color: #79f5cd; font: 700 11px/1.2 Segoe UI, sans-serif; letter-spacing: .04em; }
+.hudToggleButton { flex: 0 0 28px; width: 28px; min-height: 28px !important; margin: 0 !important; padding: 0 !important; font-size: 22px !important; line-height: 1; }
+#hud.is-collapsed { width: auto; max-height: none; padding: 8px 10px; }
+#hud.is-collapsed #hudContent { display: none; }
+#hud.is-collapsed .hudHeader h3 { display: none; }
+
+button {
+    margin: 2px;
+}
+
+.speedControls { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; margin-bottom: 8px; }
+.speedControls span { grid-column: 1 / -1; }
+.speedControls .speed-btn { width: 100%; margin: 0; }
+.speedControls .speed-btn.is-active { border-color: #79f5cd; background: linear-gradient(180deg, #17634f, #0d4036); color: #e4fff7; }
+.hudButtonRow {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 6px;
+}
+.hudButtonRow button { width: 100%; margin: 0; }
+.hudButtonRow .terraMapButton { border-radius: 4px; }
+.missionControls { display: grid; gap: 5px; margin-top: 10px; }
+#hud button { min-height: 28px; padding: 5px 8px; border: 1px solid #39627d; border-radius: 5px; background: linear-gradient(180deg, #1b3a51, #102536); color: #d9f3ff; font: 600 12px Segoe UI, sans-serif; letter-spacing: .01em; box-shadow: inset 0 1px rgba(255,255,255,.07), 0 1px 2px rgba(0,0,0,.35); transition: background .15s ease, border-color .15s ease, transform .15s ease; }
+#hud button:hover:not(:disabled) { background: linear-gradient(180deg, #28526e, #17364c); border-color: #71c8ed; transform: translateY(-1px); }
+#hud button:active:not(:disabled) { transform: translateY(0); background: #0d202e; }
+#hud button:disabled { opacity: .42; cursor: not-allowed; }
+#startBtn { border-color: #5bd1a4 !important; background: linear-gradient(180deg, #17634f, #0d4036) !important; color: #d9fff3 !important; }
+
+.terraMapButton {
+    min-width: 32px;
+    padding: 2px 5px;
+    font-size: 18px;
+    line-height: 1;
+    border: 1px solid #65bdf2;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 28%, #b5efff 0 10%, #327fb9 11% 48%, #1e5c43 49% 70%, #0b2f65 71%);
+    cursor: pointer;
+}
+
+.terraMapCard { width: min(1120px, calc(100vw - 32px)); max-height: 92vh; }
+.terraMapCard #terraMapCanvas { width: 100%; height: auto; aspect-ratio: 760 / 420; margin-top: 10px; border: 1px solid #315b79; background: radial-gradient(circle at 50% 24%, #103258, #050d19 70%); cursor: zoom-in; }
+.terraMapControls { display: grid; grid-template-columns: 1fr auto; gap: 10px; margin-top: 12px; align-items: end; }
+.terraMapControls label { display: grid; gap: 5px; color: #9fc9e3; font-size: 12px; }
+.terraMapControls input { padding: 7px; color: #e7f7ff; background: #0c2032; border: 1px solid #315b79; border-radius: 4px; }
+.probeManualRcsControl { display: flex !important; align-items: center; gap: 7px; padding-top: 4px; cursor: pointer; }
+.probeManualRcsControl input { width: auto; }
+.probeManualRcsStatus { display: block; margin-top: 7px; color: #79f5cd; font: 600 11px Segoe UI, sans-serif; }
+.probeDockingStatus { grid-column: 1 / -1; color: #ffd166; font: 600 11px/1.4 Segoe UI, sans-serif; }
+.probeDockingPanelStatus { display: block; margin-top: 7px; color: #ffd166; font: 600 11px/1.4 Segoe UI, sans-serif; }
+.terraMapNavigation { display: flex; gap: 10px; margin-top: 10px; }
+.terraMapNavigation button { flex: 1; }
+#terraMapReadout { margin-top: 10px; color: #9fc9e3; font-size: 12px; }
+
+/* Must outrank the generic .modalCard width declared later in this file. */
+#terraMapModal .terraMapCard { width: min(1240px, calc(100vw - 32px)); max-height: 92vh; }
+
+input[type="range"] {
+    width: 100%;
+}
+
+select {
+    width: 100%;
+    margin-top: 4px;
+    background: #132130;
+    color: #fff;
+    border: 1px solid #38526b;
+    border-radius: 4px;
+    padding: 4px;
+}
+
+.sceneTimeControl { display: grid; gap: 5px; margin-top: 10px; padding: 7px; border: 1px solid #294a62; border-radius: 5px; background: linear-gradient(135deg, rgba(20, 48, 68, .74), rgba(8, 21, 32, .9)); color: #a9d9ef; font: 600 12px Segoe UI, sans-serif; }
+.sceneTimeHeading { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+#sceneClockLabel { color: #ffe09a; font: 700 13px ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: .04em; }
+.sceneTimeControl input { width: 100%; box-sizing: border-box; padding: 5px 7px; border: 1px solid #436b84; border-radius: 3px; background: #0c2030; color: #e8f7ff; color-scheme: dark; font: 600 13px ui-monospace, SFMono-Regular, Consolas, monospace; }
+.countdownControl { display: grid; gap: 4px; margin-top: 8px; color: #a9d9ef; font: 600 12px Segoe UI, sans-serif; }
+.countdownControl input { box-sizing: border-box; width: 100%; padding: 5px 7px; border: 1px solid #436b84; border-radius: 3px; background: #0c2030; color: #e8f7ff; font: 600 13px ui-monospace, SFMono-Regular, Consolas, monospace; }
+
+.panelTitle {
+    color: #ffd166;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+#targetHint {
+    color: #9fd3ff;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+#failureStatus {
+    color: #ffb3b3;
+    font-size: 12px;
+    margin-top: 6px;
+}
+
+#towerFailureStatus {
+    color: #ffd6a5;
+    font-size: 12px;
+    margin-top: 6px;
+}
+
+#captureStatus {
+    color: #9fd3ff;
+    font-size: 12px;
+    margin-top: 6px;
+}
+
+#platformPanelLabel {
+    color: #a8d7ff;
+    font-size: 12px;
+    margin-bottom: 6px;
+}
+
+#shipGainProfileLabel {
+    color: #a8d7ff;
+    font-size: 12px;
+    margin-bottom: 8px;
+}
+
+#physicsPresetStatus {
+    color: #a8d7ff;
+    font-size: 12px;
+    margin-top: 6px;
+}
+
+#protocolStatus {
+    color: #b7e3ff;
+    font-size: 12px;
+    margin-top: 8px;
+    margin-bottom: 12px;
+}
+
+#info {
+    font-size: 13px;
+    line-height: 1.45;
+}
+
+.modalOverlay {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 40;
+}
+
+.modalOverlay[hidden] {
+    display: none;
+}
+
+.modalCard {
+    position: absolute;
+    top: 56px;
+    left: 56px;
+    width: min(460px, calc(100vw - 32px));
+    max-height: 88vh;
+    overflow: auto;
+    background: rgba(9, 17, 26, 0.97);
+    border: 1px solid #38526b;
+    border-radius: 14px;
+    padding: 16px;
+    box-shadow: 0 28px 60px rgba(0, 0, 0, 0.45);
+    pointer-events: auto;
+}
+
+.modalHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+    cursor: move;
+    user-select: none;
+}
+
+.modalHeader h4 {
+    margin: 0;
+    color: #ffd166;
+}
+
+.modalSection {
+    margin-top: 10px;
+}
+
+.modalCardWide {
+    width: min(560px, calc(100vw - 32px));
+}
+
+#shipModal .modalCard {
+    width: min(920px, calc(100vw - 24px));
+}
+
+.propulsionPanel { margin-top: 12px; }
+.propulsionInputs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.propulsionInputs label { display: grid; gap: 4px; color: #a8d7ff; font-size: 11px; }
+.propulsionInputs input { min-width: 0; box-sizing: border-box; padding: 5px; border: 1px solid #3a637e; border-radius: 4px; background: #0c2030; color: #e8f7ff; }
+.propulsionReadout { margin-top: 9px; color: #bfeeff; font: 600 11px/1.5 ui-monospace, SFMono-Regular, Consolas, monospace; }
+.tankDiagram { width: 100%; height: auto; margin-top: 8px; border: 1px solid #345870; border-radius: 7px; background: #07131e; }
+@media (max-width: 620px) { .propulsionInputs { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+.shipControlLoopView {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    align-items: start;
+}
+
+.controlLoopCard {
+    position: relative;
+    padding: 9px 10px 10px;
+    background: rgba(6, 14, 22, 0.82);
+    border: 1px solid #36536a;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.controlLoopTitle {
+    color: #ffd166;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 7px;
+    letter-spacing: 0.03em;
+}
+
+.controlLoopFlow {
+    display: grid;
+    align-items: stretch;
+    gap: 6px 8px;
+}
+
+.controlLoopFlow--attitude {
+    grid-template-columns:
+        minmax(122px, 1fr)
+        18px
+        minmax(122px, 1fr)
+        18px
+        minmax(130px, 1.08fr)
+        18px
+        minmax(96px, 0.88fr);
+}
+
+.controlLoopFlow--vertical {
+    grid-template-columns:
+        minmax(104px, 0.92fr)
+        18px
+        minmax(108px, 0.96fr)
+        18px
+        minmax(118px, 1.02fr)
+        18px
+        minmax(108px, 0.94fr)
+        18px
+        minmax(92px, 0.84fr);
+}
+
+.controlLoopNode {
+    min-width: 0;
+    padding: 7px 9px;
+    background: rgba(21, 42, 59, 0.88);
+    border: 1px solid #7fb7d4;
+    border-radius: 8px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.controlLoopNode--reference {
+    background: rgba(17, 35, 49, 0.92);
+}
+
+.controlLoopNode--sum {
+    background: rgba(14, 29, 41, 0.92);
+}
+
+.controlLoopNode--controller {
+    background: rgba(20, 46, 65, 0.95);
+    border-color: #9dd9ff;
+}
+
+.controlLoopNode--actuator {
+    background: rgba(18, 39, 57, 0.92);
+}
+
+.controlLoopNode--plant {
+    background: rgba(25, 49, 72, 0.88);
+}
+
+.controlLoopNodeEyebrow {
+    color: #8fcff7;
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 3px;
+}
+
+.controlLoopNodeTitle,
+.controlLoopOutputTitle {
+    color: #f4fbff;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.15;
+}
+
+.controlLoopMetricList {
+    margin-top: 5px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.controlLoopMetric {
+    color: #a9defb;
+    font-size: 10px;
+    line-height: 1.15;
+    font-family: Consolas, Monaco, monospace;
+    padding: 2px 6px;
+    background: rgba(6, 14, 22, 0.5);
+    border: 1px solid rgba(127, 183, 212, 0.18);
+    border-radius: 999px;
+    white-space: nowrap;
+}
+
+.controlLoopGainField {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 2px 6px;
+    background: rgba(6, 14, 22, 0.56);
+    border: 1px solid rgba(127, 183, 212, 0.28);
+    border-radius: 999px;
+    white-space: nowrap;
+}
+
+.controlLoopGainFieldLabel {
+    color: #d9efff;
+    font-size: 10px;
+    line-height: 1.15;
+    font-family: Consolas, Monaco, monospace;
+}
+
+.controlLoopGainFieldInput {
+    width: 58px;
+    padding: 1px 4px;
+    border: 1px solid rgba(143, 212, 255, 0.34);
+    border-radius: 6px;
+    background: rgba(12, 22, 31, 0.92);
+    color: #9fe0ff;
+    font-size: 10px;
+    line-height: 1.2;
+    font-family: Consolas, Monaco, monospace;
+}
+
+.controlLoopGainFieldInput:focus {
+    outline: none;
+    border-color: #8fd4ff;
+    box-shadow: 0 0 0 1px rgba(143, 212, 255, 0.22);
+}
+
+.controlLoopArrow {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    min-height: 14px;
+    opacity: 0.9;
+}
+
+.controlLoopArrow::before {
+    content: "";
+    position: absolute;
+    left: 1px;
+    right: 7px;
+    top: 50%;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(143, 212, 255, 0.12), rgba(143, 212, 255, 0.95));
+    transform: translateY(-50%);
+}
+
+.controlLoopArrow::after {
+    content: "";
+    position: absolute;
+    right: 1px;
+    top: 50%;
+    width: 6px;
+    height: 6px;
+    border-top: 1.5px solid #8fd4ff;
+    border-right: 1.5px solid #8fd4ff;
+    transform: translateY(-50%) rotate(45deg);
+}
+
+.controlLoopOutputsLabel {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 9px;
+    margin-bottom: 6px;
+    color: #ffd166;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.controlLoopOutputsLabel::after {
+    content: "";
+    flex: 1 1 auto;
+    height: 1px;
+    background: rgba(143, 212, 255, 0.18);
+}
+
+.controlLoopOutputs {
+    display: grid;
+    gap: 7px;
+}
+
+.controlLoopOutputs--triple {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.controlLoopOutputs--double {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.controlLoopOutputs--single {
+    grid-template-columns: 1fr;
+}
+
+.controlLoopOutput {
+    padding: 7px 9px;
+    background: rgba(10, 22, 33, 0.92);
+    border: 1px solid #2f4f67;
+    border-radius: 8px;
+}
+
+.controlLoopNote {
+    padding: 7px 9px;
+    background: rgba(9, 20, 29, 0.78);
+    border: 1px solid rgba(83, 127, 156, 0.45);
+    border-left: 3px solid #8fd4ff;
+    border-radius: 8px;
+}
+
+.controlLoopNoteTitle {
+    color: #dcefff;
+    font-size: 11px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.controlLoopNoteBody {
+    color: #9fd7f7;
+    font-size: 10px;
+    line-height: 1.25;
+    font-family: Consolas, Monaco, monospace;
+}
+
+.controlLoopFeedback {
+    margin-top: 7px;
+    padding-top: 6px;
+    border-top: 1px solid rgba(90, 132, 160, 0.28);
+    color: #86bad7;
+    font-size: 10px;
+    line-height: 1.3;
+}
+
+@media (max-width: 980px) {
+    .controlLoopFlow--attitude,
+    .controlLoopFlow--vertical {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .controlLoopOutputs--triple {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .controlLoopOutputs--double {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 720px) {
+    #shipModal .modalCard {
+        width: min(96vw, calc(100vw - 16px));
+    }
+
+    .controlLoopFlow--attitude,
+    .controlLoopFlow--vertical {
+        grid-template-columns: 1fr;
+    }
+
+    .controlLoopArrow {
+        width: 100%;
+        min-width: 100%;
+        min-height: 12px;
+    }
+
+    .controlLoopArrow::before {
+        left: 50%;
+        right: auto;
+        top: 1px;
+        bottom: 7px;
+        width: 1px;
+        height: auto;
+        transform: translateX(-50%);
+        background: linear-gradient(180deg, rgba(143, 212, 255, 0.12), rgba(143, 212, 255, 0.95));
+    }
+
+    .controlLoopArrow::after {
+        left: 50%;
+        right: auto;
+        top: auto;
+        bottom: 1px;
+        transform: translateX(-50%) rotate(135deg);
+    }
+
+    .controlLoopOutputs--triple {
+        grid-template-columns: 1fr;
+    }
+}
+
+.flightControlToolbar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.flightControlActionRow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.flightProgramGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 10px;
+}
+
+.flightProgramFields {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(114, 180, 220, 0.2);
+}
+
+.flightProgramFields[hidden] {
+    display: none;
+}
+
+.flightProgramFieldNote {
+    align-self: center;
+    color: #9fc4dc;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.flightProgramSubsectionTitle {
+    grid-column: 1 / -1;
+    color: #69dcff;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.flightProgramSubsectionTitle--booster {
+    margin-top: 8px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 201, 76, 0.38);
+    color: #ffd35f;
+}
+
+.flightProgramTestActions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+
+.flightProgramOptimizationStatus,
+.flightProgramOptimizationResults {
+    grid-column: 1 / -1;
+    color: #b7e3ff;
+    font-size: 12px;
+}
+
+.flightProgramOptimizationResults {
+    overflow-x: auto;
+}
+
+.flightProgramOptimizationResults table {
+    width: 100%;
+    border-collapse: collapse;
+    font-variant-numeric: tabular-nums;
+}
+
+.flightProgramOptimizationResults th,
+.flightProgramOptimizationResults td {
+    padding: 5px 7px;
+    border-bottom: 1px solid rgba(114, 180, 220, 0.18);
+    text-align: right;
+    white-space: nowrap;
+}
+
+.flightProgramOptimizationResults th:first-child,
+.flightProgramOptimizationResults td:first-child {
+    text-align: left;
+}
+
+.flightProgramGrid input[type="number"] {
+    width: 100%;
+    margin-top: 4px;
+    background: #132130;
+    color: #fff;
+    border: 1px solid #38526b;
+    border-radius: 4px;
+    padding: 4px;
+    box-sizing: border-box;
+}
+
+.protocolStatusInline {
+    color: #b7e3ff;
+    font-size: 12px;
+    margin-top: 8px;
+}
+
+.protocolGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.protocolSpecView {
+    margin-top: 8px;
+    margin-bottom: 12px;
+    padding: 10px;
+    background: rgba(7, 16, 25, 0.62);
+    border: 1px solid #294157;
+    border-radius: 10px;
+    font-size: 12px;
+    line-height: 1.45;
+}
+
+.protocolPanel {
+    background: rgba(7, 16, 25, 0.62);
+    border: 1px solid #294157;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.protocolDeliveryStatus {
+    color: #9fe0ff;
+    font-size: 12px;
+    line-height: 1.35;
+    margin-bottom: 8px;
+}
+
+.protocolMonitor {
+    min-height: 210px;
+    max-height: 280px;
+    overflow: auto;
+    margin: 8px 0;
+    padding: 10px;
+    background: rgba(3, 8, 14, 0.9);
+    border: 1px solid #203444;
+    border-radius: 8px;
+    color: #d7f1ff;
+    font-size: 12px;
+    line-height: 1.35;
+    white-space: pre-wrap;
+}
+
+.protocolForceRow {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.protocolSignalInput {
+    width: 100%;
+    min-width: 0;
+    padding: 7px 8px;
+    background: #07111b;
+    color: #f1fbff;
+    border: 1px solid #38526b;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+.protocolButtonRow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.protocolToggleRow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 8px 0;
+    font-size: 12px;
+}
+
+.protocolTextarea {
+    width: 100%;
+    min-height: 120px;
+    margin-top: 8px;
+    padding: 10px;
+    resize: vertical;
+    background: #07111b;
+    color: #f1fbff;
+    border: 1px solid #38526b;
+    border-radius: 8px;
+    font: 12px/1.35 Consolas, Monaco, monospace;
+    box-sizing: border-box;
+}

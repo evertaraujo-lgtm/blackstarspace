@@ -1,0 +1,20 @@
+# Dependencies and build output
+node_modules/
+dist/
+build/
+coverage/
+
+# Logs and runtime data
+*.log
+*.pid
+
+# Editor and operating-system files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Local environment configuration
+.env
+.env.*
+!.env.example

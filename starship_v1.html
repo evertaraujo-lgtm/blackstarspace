@@ -1,0 +1,492 @@
+<!doctype html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="utf-8" />
+        <title>Starship Advanced v2</title>
+        <link rel="stylesheet" href="starship_v1.css?v=20260807-instance-tracker-safe-zone-v2" />
+    </head>
+    <body>
+        <div id="hud">
+            <div class="hudHeader">
+                <div>
+                    <h3>Starship Engineering Lab Ultimate</h3>
+                    <output id="simulationSpeedIndicator" class="simulationSpeedIndicator" aria-live="polite">Simulação: 1×</output>
+                </div>
+                <button id="toggleHudBtn" class="hudToggleButton" type="button" aria-expanded="true" aria-controls="hudContent" title="Recolher menu">‹</button>
+            </div>
+            <div id="hudContent">
+            <div class="speedControls">
+                <span>Velocidade da simulação</span>
+                <button type="button" class="speed-btn" data-speed="1">1x</button>
+                <button type="button" class="speed-btn" data-speed="2">2x</button>
+                <button type="button" class="speed-btn" data-speed="5">5x</button>
+                <button type="button" class="speed-btn" data-speed="10">10x</button>
+                <button type="button" class="speed-btn" data-speed="100">100x</button>
+                <button type="button" class="speed-btn" data-speed="500">500x</button>
+            </div>
+            <div class="hudButtonRow">
+                <button id="openTelemetryModalBtn" type="button">Telemetria</button>
+                <button id="openPhysicsModalBtn" type="button">Física</button>
+                <button id="openProtocolModalBtn" type="button">Controle de Voo</button>
+                <button id="openShipModalBtn" type="button">Painel da Nave</button>
+                <button id="openTowerModalBtn" type="button">Plataforma</button>
+                <button id="toggleTelemetryHudStyleBtn" type="button">HUD: Engenharia</button>
+                <button id="openTerraMapBtn" class="terraMapButton" type="button" title="Abrir mapa orbital da Terra" aria-label="Abrir mapa orbital da Terra">🌍</button>
+            </div>
+            <hr />
+            <div>
+                Alvo de pouso <span id="landingTargetLabel">0</span> m
+                <button id="resetTargetBtn" type="button">Centro</button>
+            </div>
+            <div>
+                Modo Operacional
+                <select id="operationModeSelect">
+                    <option value="standalone">Stand-alone</option>
+                    <option value="linked">Linked</option>
+                </select>
+            </div>
+            <div class="sceneTimeControl">
+                <div class="sceneTimeHeading"><span>Horário inicial (Starbase)</span><output id="sceneClockLabel">18:30</output></div>
+                <input id="initialFlightTimeInput" type="time" value="18:30" />
+            </div>
+            <div class="countdownControl">
+                <label for="launchCountdownInput">Contagem regressiva (s)</label>
+                <input id="launchCountdownInput" type="number" min="0" max="60" step="1" value="1" />
+            </div>
+            <div class="missionControls">
+                <button id="pauseBtn" type="button">Pause</button>
+                <button id="startBtn" type="button">Start</button>
+            </div>
+            </div>
+        </div>
+        <div id="shipModal" class="modalOverlay" hidden>
+            <div class="modalCard" data-modal-card>
+                <div class="modalHeader" data-modal-handle>
+                    <h4>Painel da Nave</h4>
+                    <button id="closeShipModalBtn" type="button">Fechar</button>
+                </div>
+                <div class="modalSection">
+                    <button id="toggleShipControllersBtn" type="button">Abrir controladores</button>
+                </div>
+                <div id="shipControllersSection" hidden>
+                    <hr />
+                    <div class="panelTitle">Ganhos e Setpoints</div>
+                    <div id="shipGainProfileLabel">Nave ativa: Starship SN15</div>
+                    <div class="modalSection">
+                        <button id="resetShipGainsBtn" type="button">Restaurar Parametros da Nave</button>
+                    </div>
+                    <div class="panelTitle">Malhas de Controle</div>
+                    <div id="shipControlLoopView" class="shipControlLoopView"></div>
+                </div>
+                <section id="sn15PropulsionPanel" class="propulsionPanel" hidden>
+                    <hr />
+                    <div id="propulsionPanelTitle" class="panelTitle">Propulsão SN15</div>
+                    <div class="propulsionInputs">
+                        <label>Empuxo/Raptor (MN)<input id="sn15EngineThrustInput" type="number" min="1" max="4" step="0.05" /></label>
+                        <label>Isp nível do mar (s)<input id="sn15IspInput" type="number" min="200" max="450" step="1" /></label>
+                        <label>LOX principal (t)<input id="sn15MainLoxInput" type="number" min="0" max="2000" step="1" /></label>
+                        <label>LCH₄ principal (t)<input id="sn15MainLch4Input" type="number" min="0" max="800" step="1" /></label>
+                        <label>LOX cabeceira (t)<input id="sn15HeaderLoxInput" type="number" min="0" max="200" step="0.1" /></label>
+                        <label>LCH₄ cabeceira (t)<input id="sn15HeaderLch4Input" type="number" min="0" max="80" step="0.1" /></label>
+                    </div>
+                    <div id="sn15PropulsionReadout" class="propulsionReadout"></div>
+                    <canvas id="sn15TankDiagram" class="tankDiagram" width="540" height="250" aria-label="Diagrama dos tanques e centro de massa da SN15"></canvas>
+                    <div class="controlHint">Parâmetros podem ser alterados antes do início da missão.</div>
+                </section>
+                <section id="superHeavyStackPanel" class="propulsionPanel" hidden>
+                    <hr />
+                    <div class="panelTitle">Configuração do Stack</div>
+                    <label><input id="superHeavyAttachS24Input" type="checkbox" /> Acoplar Ship 24 ao Super Heavy</label>
+                    <div id="superHeavyStackReadout" class="propulsionReadout"></div>
+                </section>
+                <section id="probeManualRcsPanel" class="propulsionPanel" hidden>
+                    <hr />
+                    <div class="panelTitle">Controle RCS da Sonda</div>
+                    <label class="probeManualRcsControl"><input id="probeManualRcsInput" type="checkbox" /> Ativar RCS manual (setas)</label>
+                    <output id="probeManualRcsStatus" class="probeManualRcsStatus">RCS manual desligado</output>
+                    <output id="probeDockingPanelStatus" class="probeDockingPanelStatus">Par de sondas não posicionado.</output>
+                    <div class="controlHint">Com a missão em execução: ↑/↓ para impulso radial, ←/→ para impulso lateral e A/D para rotação.</div>
+                </section>
+                <hr />
+                <div class="panelTitle">Falhas da Nave</div>
+                <div>
+                    Motores / TVC
+                    <select id="engineFailureSelect">
+                        <option value="nominal">Nominal</option>
+                        <option value="one_out">1 motor indisponível</option>
+                        <option value="single_engine">Apenas 1 motor ativo</option>
+                        <option value="no_ignition">Sem ignição</option>
+                        <option value="flameout">Flameout</option>
+                    </select>
+                </div>
+                <div>
+                    RCS
+                    <select id="rcsFailureSelect">
+                        <option value="nominal">Nominal</option>
+                        <option value="degraded">Baixa autoridade</option>
+                        <option value="offline">Inoperante</option>
+                        <option value="stuck_left">Travado para esquerda</option>
+                        <option value="stuck_right">Travado para direita</option>
+                    </select>
+                </div>
+                <div>
+                    Flaps
+                    <select id="flapFailureSelect">
+                        <option value="nominal">Nominal</option>
+                        <option value="sluggish">Lentos</option>
+                        <option value="jam_current">Travados na posicao atual</option>
+                        <option value="jam_open">Travados abertos</option>
+                        <option value="jam_closed">Travados fechados</option>
+                        <option value="detached">Perdidos</option>
+                        <option value="asymmetric">Assimetria severa</option>
+                    </select>
+                </div>
+                <div id="failureStatus">Sem falhas ativas</div>
+            </div>
+        </div>
+        <div id="towerModal" class="modalOverlay" hidden>
+            <div class="modalCard" data-modal-card>
+                <div class="modalHeader" data-modal-handle>
+                    <h4>Painel da Plataforma</h4>
+                    <button id="closeTowerModalBtn" type="button">Fechar</button>
+                </div>
+                <div id="platformPanelLabel">Plataforma atual: Mecazilla</div>
+                <div id="targetHint">Clique no solo para mover o alvo de aterrissagem</div>
+                <div id="captureStatus">Plataforma em espera</div>
+                <div class="modalSection">
+                    <button id="falseTowerAuthBtn" type="button">Injetar Falsa Autorização</button>
+                </div>
+                <div class="panelTitle">Ponto de Aproximação</div>
+                <div class="flightProgramGrid">
+                    <label>Distância (m)<input id="towerApproachDistanceInput" type="number" min="50" max="1000" step="10" value="200" /></label>
+                    <label>Ângulo (°)<input id="towerApproachAngleInput" type="number" min="-80" max="80" step="1" value="45" /></label>
+                    <label>Tolerância (m)<input id="towerApproachToleranceInput" type="number" min="20" max="300" step="5" value="80" /></label>
+                </div>
+                <div id="towerApproachCommand" class="controlHint"></div>
+                <hr />
+                <div class="panelTitle">Falhas da Plataforma</div>
+                <div>
+                    Link de posicionamento
+                    <select id="towerLinkFailureSelect">
+                        <option value="nominal">Nominal</option>
+                        <option value="offline">Sem comunicação</option>
+                        <option value="bias_left">Viés lateral para esquerda</option>
+                        <option value="bias_right">Viés lateral para direita</option>
+                        <option value="bias_high">Viés vertical para cima</option>
+                        <option value="bias_low">Viés vertical para baixo</option>
+                    </select>
+                </div>
+                <div>
+                    Braços de captura
+                    <select id="towerArmsFailureSelect">
+                        <option value="nominal">Nominal</option>
+                        <option value="sluggish">Lentos</option>
+                        <option value="jam_open">Travados abertos</option>
+                        <option value="left_stuck">Braço esquerdo travado</option>
+                        <option value="right_stuck">Braço direito travado</option>
+                    </select>
+                </div>
+                <div id="towerFailureStatus">Plataforma nominal</div>
+            </div>
+        </div>
+        <div id="telemetryModal" class="modalOverlay" hidden>
+            <div class="modalCard modalCardWide" data-modal-card>
+                <div class="modalHeader" data-modal-handle>
+                    <h4>Painel de Telemetria</h4>
+                    <button id="closeTelemetryModalBtn" type="button">Fechar</button>
+                </div>
+                <div class="modalSection">
+                    <button id="exportBtn" type="button">Exportar Telemetria CSV</button>
+                </div>
+                <hr />
+                <div id="info"></div>
+            </div>
+        </div>
+        <div id="protocolModal" class="modalOverlay" hidden>
+            <div class="modalCard modalCardWide" data-modal-card>
+                <div class="modalHeader" data-modal-handle>
+                    <h4>Controle de Voo</h4>
+                    <button id="closeProtocolModalBtn" type="button">Fechar</button>
+                </div>
+                <div class="flightControlToolbar">
+                    <div>
+                        Nave controlada
+                        <select id="shipSelect"></select>
+                    </div>
+                    <div>
+                        Plataforma roteada
+                        <select id="platformSelect"></select>
+                    </div>
+                    <div>
+                        Retorno para a nave
+                        <select id="shipFeedbackModeSelect">
+                            <option value="closed_loop">Malha Fechada</option>
+                            <option value="platform_isolated">Plataforma Isolada</option>
+                        </select>
+                    </div>
+                    <div>
+                        Retorno do Super Heavy
+                        <select id="boosterRecoverySelect">
+                            <option value="tower_catch">Captura na torre</option>
+                            <option value="splashdown">Amerrissagem no oceano</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="flightControlActionRow">
+                    <button id="toggleFlightRouteBtn" type="button">Travar Enlace</button>
+                    <button id="abortBellyBtn" type="button">Emergência: Abort Belly</button>
+                    <button id="toggleFlightControlDetailsBtn" type="button" aria-expanded="false">Exibir detalhes técnicos</button>
+                </div>
+                <div class="protocolSpecView">
+                    <div class="panelTitle">Programa de Voo</div>
+                    <div class="flightProgramGrid">
+                        <div>
+                            Perfil de missão
+                            <select id="flightProgramProfileSelect">
+                                <option value="test_takeoff_sequence" selected>Decolagem de Teste + Sequenciador</option>
+                                <option value="reentry_recovery">Reentrada / Recuperação</option>
+                                <option value="boostback_burn">B7 Boostback Burn</option>
+                                <option value="suborbital_mission">Missão Suborbital — decolagem, hot-staging e retorno</option>
+                                <option value="stack_hotstage_boostback">Stack B7 + S24 — Hot-staging e retorno</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="flightProgramGrid flightProgramFields" data-flight-program-fields="test_takeoff_sequence">
+                        <div>
+                            Altitude de teste (m)
+                            <input id="flightProgramAltitudeInput" type="number" min="0" max="800000" step="10" value="2800" />
+                        </div>
+                        <div>
+                            Tempo de espera (s)
+                            <input id="flightProgramHoldInput" type="number" min="0" max="300" step="0.5" value="6" />
+                        </div>
+                        <div>
+                            Após o hold
+                            <select id="flightProgramPostHoldSelect">
+                                <option value="controlled_recovery">Pouso / captura controlada</option>
+                                <option value="bellyflop_recovery" selected>Iniciar bellyflop</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="flightProgramGrid flightProgramFields" data-flight-program-fields="stack_hotstage_boostback" hidden>
+                        <div class="flightProgramSubsectionTitle">S24 — transferência ao Oceano Índico</div>
+                        <div>
+                            Ápice alvo da S24 (m)
+                            <input id="flightProgramHotstageAltitudeInput" type="number" min="60000" max="800000" step="1000" value="180000" />
+                        </div>
+                        <div>
+                            Potência de transferência (%)
+                            <input id="flightProgramHotstageThrottleInput" type="number" min="35" max="100" step="0.5" value="100" />
+                        </div>
+                        <div>
+                            Elevação do setpoint (m/s)
+                            <input id="flightProgramHotstageRampInput" type="number" min="100" max="1200" step="25" value="500" />
+                        </div>
+                        <div>
+                            Correção máxima de pitch (°)
+                            <input id="flightProgramHotstagePitchBiasInput" type="number" min="5" max="35" step="0.5" value="20" />
+                        </div>
+                        <div>
+                            Reserva mínima do tanque principal (%)
+                            <input id="flightProgramHotstageReserveInput" type="number" min="1" max="25" step="0.5" value="1" />
+                        </div>
+                        <div class="flightProgramFieldNote">
+                            O controlador eleva progressivamente o arco até este setpoint, preservando o pitch prograde da trajetória.
+                        </div>
+                        <div class="flightProgramTestActions">
+                            <button id="runHotstageOptimizationBtn" type="button">Simular combinações</button>
+                            <button id="applyHotstageOptimizationBtn" type="button" disabled>Aplicar melhor ajuste</button>
+                        </div>
+                        <div id="hotstageOptimizationStatus" class="flightProgramOptimizationStatus" aria-live="polite">
+                            Ensaio offline pronto. A missão ativa não será alterada.
+                        </div>
+                        <div id="hotstageOptimizationResults" class="flightProgramOptimizationResults" hidden></div>
+                        <div class="flightProgramSubsectionTitle flightProgramSubsectionTitle--booster">B7 — boostback e retorno à torre</div>
+                        <div>
+                            Potência do boostback (%)
+                            <input id="flightProgramBoosterThrottleInput" type="number" min="55" max="100" step="0.5" value="86" />
+                        </div>
+                        <div>
+                            Ângulo do flip retrogrado (°)
+                            <input id="flightProgramBoosterFlipAngleInput" type="number" min="85" max="165" step="1" value="135" />
+                        </div>
+                        <div>
+                            Limite de velocidade de retorno (m/s)
+                            <input id="flightProgramBoosterInboundVelocityInput" type="number" min="100" max="1600" step="10" value="310" />
+                        </div>
+                        <div>
+                            Duração máxima do boostback (s)
+                            <input id="flightProgramBoosterBurnDurationInput" type="number" min="60" max="240" step="5" value="90" />
+                        </div>
+                        <div>
+                            Autoridade de empuxo terminal (%)
+                            <input id="flightProgramBoosterRecoveryThrustInput" type="number" min="45" max="100" step="1" value="72" />
+                        </div>
+                        <div class="flightProgramFieldNote">
+                            O ensaio procura entregar o B7 à janela da torre dentro dos limites de posição, velocidades e inclinação.
+                        </div>
+                        <div class="flightProgramTestActions">
+                            <button id="runBoosterOptimizationBtn" type="button">Simular retorno B7</button>
+                            <button id="applyBoosterOptimizationBtn" type="button" disabled>Aplicar ajuste B7</button>
+                        </div>
+                        <div id="boosterOptimizationStatus" class="flightProgramOptimizationStatus" aria-live="polite">
+                            Ensaio offline do booster pronto. A missão ativa não será alterada.
+                        </div>
+                        <div id="boosterOptimizationResults" class="flightProgramOptimizationResults" hidden></div>
+                    </div>
+                    <div class="flightProgramGrid flightProgramFields" data-flight-program-fields="boostback_burn" hidden>
+                        <div class="flightProgramFieldNote">
+                            Perfil B7 dedicado: condições iniciais e entrega para aproximação definidas pelo programa de boostback.
+                        </div>
+                    </div>
+                    <div class="flightProgramGrid flightProgramFields" data-flight-program-fields="reentry_recovery" hidden>
+                        <div class="flightProgramFieldNote">
+                            Perfil de recuperação: os setpoints são calculados pela guiagem de reentrada e pela plataforma selecionada.
+                        </div>
+                    </div>
+                    <div id="flightProgramStatus" class="protocolStatusInline">Programa nominal de reentrada.</div>
+                </div>
+                <div id="protocolStatus">Controlador de voo em espera.</div>
+                <div id="flightControlDetails" hidden>
+                    <div id="flightControlSummary" class="protocolSpecView"></div>
+                    <div id="protocolSpecView" class="protocolSpecView"></div>
+                </div>
+                <div class="protocolGrid">
+                    <div class="protocolPanel">
+                        <div class="panelTitle">Uplink | Nave -> Plataforma</div>
+                        <div id="protocolUplinkDeliveryStatus" class="protocolDeliveryStatus">Canal nominal.</div>
+                        <pre id="protocolUplinkView" class="protocolMonitor">{}</pre>
+                        <div class="protocolForceRow">
+                            <select id="protocolUplinkSignalSelect"></select>
+                            <input id="protocolUplinkSignalValueInput" type="text" class="protocolSignalInput" />
+                        </div>
+                        <div class="protocolButtonRow">
+                            <button id="forceProtocolUplinkSignalBtn" type="button">Forçar Sinal</button>
+                            <button id="clearProtocolUplinkOverrideBtn" type="button">Limpar Override</button>
+                            <button id="loadProtocolUplinkBtn" type="button">Copiar pacote atual</button>
+                        </div>
+                        <label class="protocolToggleRow">
+                            <input id="protocolUplinkOverrideEnabled" type="checkbox" />
+                            Ativar override de uplink
+                        </label>
+                        <textarea id="protocolUplinkOverrideText" class="protocolTextarea" spellcheck="false">{}</textarea>
+                    </div>
+                    <div class="protocolPanel">
+                        <div class="panelTitle">Downlink | Plataforma -> Nave</div>
+                        <div id="protocolDownlinkDeliveryStatus" class="protocolDeliveryStatus">Canal nominal.</div>
+                        <pre id="protocolDownlinkView" class="protocolMonitor">{}</pre>
+                        <div class="protocolForceRow">
+                            <select id="protocolDownlinkSignalSelect"></select>
+                            <input id="protocolDownlinkSignalValueInput" type="text" class="protocolSignalInput" />
+                        </div>
+                        <div class="protocolButtonRow">
+                            <button id="forceProtocolDownlinkSignalBtn" type="button">Forçar Sinal</button>
+                            <button id="clearProtocolDownlinkOverrideBtn" type="button">Limpar Override</button>
+                            <button id="loadProtocolDownlinkBtn" type="button">Copiar pacote atual</button>
+                        </div>
+                        <label class="protocolToggleRow">
+                            <input id="protocolDownlinkOverrideEnabled" type="checkbox" />
+                            Ativar override de downlink
+                        </label>
+                        <textarea id="protocolDownlinkOverrideText" class="protocolTextarea" spellcheck="false">{}</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="physicsModal" class="modalOverlay" hidden>
+            <div class="modalCard" data-modal-card>
+                <div class="modalHeader" data-modal-handle>
+                    <h4>Painel de Física</h4>
+                    <button id="closePhysicsModalBtn" type="button">Fechar</button>
+                </div>
+                <div>
+                    Preset de física
+                    <select id="physicsPresetSelect">
+                        <option value="nominal">Nominal</option>
+                        <option value="crosswind_right">Vento lateral para direita</option>
+                        <option value="crosswind_left">Vento lateral para esquerda</option>
+                        <option value="updraft">Coluna ascendente</option>
+                        <option value="downdraft">Corrente descendente</option>
+                        <option value="custom">Personalizado</option>
+                    </select>
+                </div>
+                <div id="physicsPresetStatus">Configuração nominal.</div>
+                <hr />
+                <div>
+                    Vento Horizontal <input id="windXSlider" type="range" min="-50" max="50" value="0" /><span
+                        id="windXLabel"
+                        >0</span
+                    >
+                    m/s
+                </div>
+                <div>
+                    Vento Vertical <input id="windZSlider" type="range" min="-20" max="20" value="0" /><span
+                        id="windZLabel"
+                        >0</span
+                    >
+                    m/s
+                </div>
+                <div id="physicsMassModelStatus" class="controlHint">
+                    Massa calculada pelo veículo: massa seca + propelente + estágios acoplados.
+                </div>
+            </div>
+        </div>
+        <div id="terraMapModal" class="modalOverlay" hidden>
+            <div class="modalCard terraMapCard" data-modal-card>
+                <div class="modalHeader" data-modal-handle>
+                    <h4>Terra / Mapa Orbital</h4>
+                    <button id="closeTerraMapModalBtn" type="button">Fechar</button>
+                </div>
+                <canvas id="terraMapCanvas" width="760" height="420" aria-label="Mapa orbital e trajetória da nave"></canvas>
+                <div class="terraMapControls">
+                    <label>Posição orbital (km)<input id="terraMapTargetInput" type="number" min="0" max="40075" step="1" value="0" /></label>
+                    <button id="applyTerraMapTargetBtn" type="button">Definir alvo</button>
+                </div>
+                <div id="probeMapControls" class="terraMapControls" hidden>
+                    <label>Altitude da sonda (m)<input id="probeAltitudeInput" type="number" min="1000" max="800000" step="1000" value="400000" /></label>
+                    <label>Velocidade horizontal (m/s)<input id="probeVelocityInput" type="number" min="0" max="12000" step="10" value="7670" /></label>
+                    <label>Massa (kg)<input id="probeMassInput" type="number" min="1" max="5000" step="1" value="300" /></label>
+                    <button id="setProbePositionBtn" type="button">Posicionar sonda</button>
+                    <button id="simulateProbeTrajectoryBtn" type="button">Simular trajetória</button>
+                    <button id="positionProbePairBtn" type="button">Posicionar duas sondas (100 m)</button>
+                    <output id="probeDockingStatus" class="probeDockingStatus">Par de sondas não posicionado.</output>
+                </div>
+                <div class="terraMapNavigation">
+                    <button id="focusStarbaseBtn" type="button">Voltar à Starbase</button>
+                </div>
+                <div id="terraMapReadout">Clique no mapa para definir o alvo de pouso.</div>
+            </div>
+        </div>
+        <canvas id="cv"></canvas>
+        <div id="graphTimeline">
+            <span>Histórico</span>
+            <input id="timeScroll" type="range" min="0" max="0" value="0" />
+        </div>
+        <div id="activeControllerIndicator" aria-live="polite"></div>
+        <aside id="instanceTracker" aria-label="Instâncias de voo">
+            <div class="instanceTrackerHeader"><span class="instanceTrackerTitle">ACOMPANHAR INSTÂNCIAS</span><button id="instanceTrackerToggleBtn" type="button" aria-expanded="true">Recolher</button></div>
+            <div id="instanceTrackerList"></div>
+        </aside>
+        <script src="scene.js?v=20260801-scene-radio-animation" defer></script>
+        <script src="terra.js?v=20260801-high-atmosphere-universe" defer></script>
+        <script src="controllers.js?v=20260801-control-algorithms" defer></script>
+        <script src="environment.js?v=20260808-environment-extraction-v1" defer></script>
+        <script src="physical_core.js?v=20260806-rendezvous-contact-v3" defer></script>
+        <script src="ships.js?v=20260807-s24-orbital-insertion-v1" defer></script>
+        <script src="vehicles.js?v=20260806-suborbital-propellant-v1" defer></script>
+        <script src="platforms.js?v=20260801-platform-classes" defer></script>
+        <script src="platform_definitions.js?v=20260801-platform-definitions" defer></script>
+        <script src="flight_control.js?v=20260807-mechazilla-arm-engagement-v2" defer></script>
+        <script src="terra_modal.js?v=20260805-probe-docking" defer></script>
+        <script src="telemetry.js?v=20260808-store-extraction-v1" defer></script>
+        <script src="simulation_loop.js?v=20260808-loop-extraction-v1" defer></script>
+        <script src="tower_contact.js?v=20260808-geometry-extraction-v1" defer></script>
+        <script src="instances.js?v=20260808-tracker-extraction-v1" defer></script>
+        <script src="mission_state.js?v=20260808-state-migration-v1" defer></script>
+        <script src="propulsion.js?v=20260808-propulsion-extraction-v1" defer></script>
+        <script src="probe_docking.js?v=20260808-probe-extraction-v1" defer></script>
+        <script src="mission_simulation.js?v=20260808-simulation-extraction-v1" defer></script>
+        <script src="renderer.js?v=20260808-renderer-extraction-v1" defer></script>
+        <script src="starship_v1.js?v=20260807-b7-tower-arm-capture-v1" defer></script>
+    </body>
+</html>
