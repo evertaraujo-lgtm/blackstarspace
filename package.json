@@ -1,0 +1,18 @@
+{
+  "name": "black-star-space",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Simulador 2D de engenharia e voo aeroespacial em HTML, JavaScript e Canvas.",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0 --open /starship_v1.html",
+    "start": "npm run dev",
+    "test": "node --test physical_core.test.js",
+    "preview": "vite preview --host 0.0.0.0"
+  },
+  "devDependencies": {
+    "vite": "^7.0.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

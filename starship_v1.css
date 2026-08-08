@@ -68,6 +68,7 @@ canvas {
 
 #hud {
     position: absolute;
+    z-index: 10;
     left: 10px;
     top: 10px;
     background: rgba(0, 0, 0, 0.85);
@@ -562,6 +563,71 @@ select {
 }
 
 @media (max-width: 720px) {
+    #hud {
+        position: fixed;
+        left: max(8px, env(safe-area-inset-left));
+        top: max(8px, env(safe-area-inset-top));
+        width: min(250px, calc(100vw - 16px));
+        max-height: calc(100dvh - 16px);
+        touch-action: manipulation;
+    }
+
+    #hud.is-collapsed {
+        width: auto;
+        max-height: none;
+        padding: 7px;
+        border: 1px solid rgba(101, 189, 242, 0.8);
+        background: rgba(5, 16, 27, 0.94);
+    }
+
+    #hud.is-collapsed .hudToggleButton {
+        width: 42px;
+        flex-basis: 42px;
+        min-height: 42px !important;
+        font-size: 19px !important;
+    }
+
+    #hud:not(.is-collapsed) {
+        width: min(290px, calc(100vw - 16px));
+    }
+
+    #hud input,
+    #hud select,
+    .modalCard input,
+    .modalCard select,
+    .modalCard textarea {
+        font-size: 16px;
+    }
+
+    .modalCard,
+    #terraMapModal .terraMapCard {
+        left: 8px !important;
+        top: 8px !important;
+        width: calc(100vw - 16px);
+        max-height: calc(100dvh - 16px);
+        box-sizing: border-box;
+        padding: 12px;
+        border-radius: 10px;
+    }
+
+    .modalHeader {
+        cursor: default;
+        touch-action: pan-y;
+    }
+
+    .terraMapControls {
+        grid-template-columns: 1fr;
+        gap: 7px;
+    }
+
+    /* These desktop telemetry overlays leave no useful simulator area on a
+       phone. Their information remains available through the modal panels. */
+    #graphTimeline,
+    #activeControllerIndicator,
+    #instanceTracker {
+        display: none;
+    }
+
     #shipModal .modalCard {
         width: min(96vw, calc(100vw - 16px));
     }

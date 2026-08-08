@@ -1,12 +1,32 @@
 // UI composition. Loaded after main.js so all mission state and callbacks are ready.
 (function () {
+    const mobileViewport = window.matchMedia("(max-width: 720px)");
+
+    function syncMobileHudLayout(matchesMobileViewport) {
+        if (matchesMobileViewport) {
+            hud.classList.add("is-collapsed");
+            toggleHudBtn.textContent = "☰";
+            toggleHudBtn.title = "Abrir controles";
+            toggleHudBtn.setAttribute("aria-expanded", "false");
+        } else {
+            hud.classList.remove("is-collapsed");
+            toggleHudBtn.textContent = "‹";
+            toggleHudBtn.title = "Recolher menu";
+            toggleHudBtn.setAttribute("aria-expanded", "true");
+        }
+    }
+
+    syncMobileHudLayout(mobileViewport.matches);
+    mobileViewport.addEventListener("change", (event) => syncMobileHudLayout(event.matches));
+
     speedButtons.forEach((button) => {
         button.addEventListener("click", () => { sim = Number(button.dataset.speed); updateSimulationSpeedUI(); });
     });
     toggleHudBtn.addEventListener("click", () => {
         const isCollapsed = hud.classList.toggle("is-collapsed");
-        toggleHudBtn.textContent = isCollapsed ? "›" : "‹";
-        toggleHudBtn.title = isCollapsed ? "Expandir menu" : "Recolher menu";
+        const isMobile = mobileViewport.matches;
+        toggleHudBtn.textContent = isCollapsed ? (isMobile ? "☰" : "›") : "‹";
+        toggleHudBtn.title = isCollapsed ? (isMobile ? "Abrir controles" : "Expandir menu") : "Recolher menu";
         toggleHudBtn.setAttribute("aria-expanded", String(!isCollapsed));
     });
     toggleTelemetryHudStyleBtn.addEventListener("click", () => {
