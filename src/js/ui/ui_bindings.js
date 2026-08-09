@@ -5,9 +5,6 @@
     function syncMobileHudLayout(matchesMobileViewport) {
         if (matchesMobileViewport) {
             hud.classList.add("is-collapsed");
-            // The canvas gear is the mobile entry point for this panel. Keep
-            // it closed initially so its first tap always opens the menu.
-            instanceTracker.hidden = true;
             toggleHudBtn.textContent = "☰";
             toggleHudBtn.title = "Abrir controles";
             toggleHudBtn.setAttribute("aria-expanded", "false");

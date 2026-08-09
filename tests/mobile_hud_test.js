@@ -34,6 +34,18 @@ const fs = require('fs');
     await new Promise((res) => setTimeout(res, 100));
   }
 
+  const menuButtonBox = await page.$eval('#toggleHudBtn', (button) => {
+    const rect = button.getBoundingClientRect();
+    return { x: rect.x, y: rect.y, width: rect.width, height: rect.height };
+  });
+  const menuInitiallyCollapsed = await page.$eval('#hud', (element) => element.classList.contains('is-collapsed'));
+  await page.touchscreen.tap(menuButtonBox.x + menuButtonBox.width / 2, menuButtonBox.y + menuButtonBox.height / 2);
+  const menuOpenedByTap = await page.$eval('#hud', (element) => !element.classList.contains('is-collapsed'));
+
+  if (!menuInitiallyCollapsed || !menuOpenedByTap) {
+    throw new Error('O botão do menu mobile não abriu os controles após um toque.');
+  }
+
   const hudInfo = await page.evaluate(() => {
     return {
       mobileHudButtonsDefined: typeof window.mobileHudButtons !== 'undefined',
@@ -54,11 +66,12 @@ const fs = require('fs');
     }));
 
   // screenshot
-  const screenshotPath = 'tests/mobile_hud_screenshot.png';
+  const screenshotPath = '/tmp/starship-mobile-hud-screenshot.png';
   await page.screenshot({ path: screenshotPath, fullPage: false });
 
   console.log('URL:', url);
   console.log('Mobile HUD style:', hudInfo.telemetryStyle);
+  console.log('Main menu opens on touch:', menuOpenedByTap);
   console.log('Is mobile viewport:', hudInfo.isMobileViewport);
   console.log('mobileHudButtonsDefined:', hudInfo.mobileHudButtonsDefined);
   if (hudInfo.mobileHudButtons) console.log('mobileHudButtons summary:', JSON.stringify(hudInfo.mobileHudButtons, null, 2));
