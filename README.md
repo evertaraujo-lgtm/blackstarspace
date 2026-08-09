@@ -420,6 +420,22 @@ The objective is to create a game where understanding **why something happened**
 
 ## Status
 
+## Project Structure
+
+```text
+assets/images/       Runtime image assets
+src/styles/          Application styles
+src/js/app/          Composition root and application startup
+src/js/core/         Shared primitives, DOM access and physics core
+src/js/entities/     Vehicle and platform definitions
+src/js/flight/       Flight control, programs and propulsion
+src/js/mission/      Mission state, runtime and simulation loop
+src/js/rendering/    Canvas rendering
+src/js/ui/           Panels, modals and UI bindings
+src/js/world/        Scene, Earth view and docking world features
+tests/               Automated and browser-oriented tests
+```
+
 Black Star Space is currently an experimental personal project and is under active development.
 
 Expect:

@@ -1,5 +1,5 @@
 const assert = require("node:assert/strict");
-const { PhysicalCore } = require("./physical_core.js");
+const { PhysicalCore } = require("../src/js/core/physical_core.js");
 
 const core = new PhysicalCore();
 

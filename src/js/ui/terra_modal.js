@@ -16,7 +16,7 @@
             this.drag = null;
             this.earthImage = new Image();
             this.earthImage.addEventListener("load", () => this.draw());
-            this.earthImage.src = "img/terra.png";
+            this.earthImage.src = "assets/images/terra.png";
             applyButton.addEventListener("click", () => this.setTargetFromKilometres(Number(input.value)));
             canvas.addEventListener("wheel", (event) => {
                 event.preventDefault();

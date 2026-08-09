@@ -4,7 +4,7 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         <title>Starship Advanced v2</title>
-        <link rel="stylesheet" href="starship_v1.css?v=20260807-instance-tracker-safe-zone-v2" />
+        <link rel="stylesheet" href="src/styles/starship_v1.css?v=20260807-instance-tracker-safe-zone-v2" />
     </head>
     <body>
         <div id="hud">
@@ -468,36 +468,36 @@
             <div class="instanceTrackerHeader"><span class="instanceTrackerTitle">ACOMPANHAR INSTÂNCIAS</span><button id="instanceTrackerToggleBtn" type="button" aria-expanded="true">Recolher</button></div>
             <div id="instanceTrackerList"></div>
         </aside>
-        <script src="scene.js?v=20260801-scene-radio-animation" defer></script>
-        <script src="terra.js?v=20260801-high-atmosphere-universe" defer></script>
-        <script src="controllers.js?v=20260801-control-algorithms" defer></script>
-        <script src="app_context.js?v=20260808-context-v1" defer></script>
-        <script src="dom.js?v=20260808-dom-extraction-v1" defer></script>
-        <script src="modal_controller.js?v=20260808-modal-extraction-v1" defer></script>
-        <script src="flight_control_preferences.js?v=20260808-preferences-extraction-v1" defer></script>
-        <script src="control_loop_view.js?v=20260808-control-loop-view-v1" defer></script>
-        <script src="environment.js?v=20260808-environment-extraction-v1" defer></script>
-        <script src="physical_core.js?v=20260806-rendezvous-contact-v3" defer></script>
-        <script src="ships.js?v=20260807-s24-orbital-insertion-v1" defer></script>
-        <script src="vehicles.js?v=20260806-suborbital-propellant-v1" defer></script>
-        <script src="platforms.js?v=20260801-platform-classes" defer></script>
-        <script src="platform_definitions.js?v=20260801-platform-definitions" defer></script>
-        <script src="flight_control.js?v=20260808-protocol-contract-v1" defer></script>
-        <script src="flight_programs.js?v=20260808-flight-programs-v1" defer></script>
-        <script src="protocol_ui.js?v=20260808-protocol-ui-v1" defer></script>
-        <script src="terra_modal.js?v=20260805-probe-docking" defer></script>
-        <script src="telemetry.js?v=20260808-store-extraction-v1" defer></script>
-        <script src="mission_runtime.js?v=20260808-runtime-services-v1" defer></script>
-        <script src="simulation_loop.js?v=20260808-loop-extraction-v1" defer></script>
-        <script src="tower_contact.js?v=20260808-geometry-extraction-v1" defer></script>
-        <script src="instances.js?v=20260808-tracker-extraction-v1" defer></script>
-        <script src="mission_state.js?v=20260808-state-migration-v1" defer></script>
-        <script src="propulsion.js?v=20260808-propulsion-extraction-v1" defer></script>
-        <script src="probe_docking.js?v=20260808-probe-extraction-v1" defer></script>
-        <script src="mission_simulation.js?v=20260808-simulation-extraction-v1" defer></script>
-        <script src="renderer.js?v=20260808-renderer-extraction-v1" defer></script>
+        <script src="src/js/world/scene.js?v=20260801-scene-radio-animation" defer></script>
+        <script src="src/js/world/terra.js?v=20260801-high-atmosphere-universe" defer></script>
+        <script src="src/js/core/controllers.js?v=20260801-control-algorithms" defer></script>
+        <script src="src/js/core/app_context.js?v=20260808-context-v1" defer></script>
+        <script src="src/js/core/dom.js?v=20260808-dom-extraction-v1" defer></script>
+        <script src="src/js/ui/modal_controller.js?v=20260808-modal-extraction-v1" defer></script>
+        <script src="src/js/flight/flight_control_preferences.js?v=20260808-preferences-extraction-v1" defer></script>
+        <script src="src/js/ui/control_loop_view.js?v=20260808-control-loop-view-v1" defer></script>
+        <script src="src/js/core/environment.js?v=20260808-environment-extraction-v1" defer></script>
+        <script src="src/js/core/physical_core.js?v=20260806-rendezvous-contact-v3" defer></script>
+        <script src="src/js/entities/ships.js?v=20260807-s24-orbital-insertion-v1" defer></script>
+        <script src="src/js/entities/vehicles.js?v=20260806-suborbital-propellant-v1" defer></script>
+        <script src="src/js/entities/platforms.js?v=20260801-platform-classes" defer></script>
+        <script src="src/js/entities/platform_definitions.js?v=20260801-platform-definitions" defer></script>
+        <script src="src/js/flight/flight_control.js?v=20260808-protocol-contract-v1" defer></script>
+        <script src="src/js/flight/flight_programs.js?v=20260808-flight-programs-v1" defer></script>
+        <script src="src/js/ui/protocol_ui.js?v=20260808-protocol-ui-v1" defer></script>
+        <script src="src/js/ui/terra_modal.js?v=20260805-probe-docking" defer></script>
+        <script src="src/js/mission/telemetry.js?v=20260808-store-extraction-v1" defer></script>
+        <script src="src/js/mission/mission_runtime.js?v=20260808-runtime-services-v1" defer></script>
+        <script src="src/js/mission/simulation_loop.js?v=20260808-loop-extraction-v1" defer></script>
+        <script src="src/js/flight/tower_contact.js?v=20260808-geometry-extraction-v1" defer></script>
+        <script src="src/js/ui/instances.js?v=20260808-tracker-extraction-v1" defer></script>
+        <script src="src/js/mission/mission_state.js?v=20260808-state-migration-v1" defer></script>
+        <script src="src/js/flight/propulsion.js?v=20260808-propulsion-extraction-v1" defer></script>
+        <script src="src/js/world/probe_docking.js?v=20260808-probe-extraction-v1" defer></script>
+        <script src="src/js/mission/mission_simulation.js?v=20260808-simulation-extraction-v1" defer></script>
+        <script src="src/js/rendering/renderer.js?v=20260808-renderer-extraction-v1" defer></script>
         <!-- Composition root: starts only after every classic dependency above. -->
-        <script src="main.js?v=20260808-main-v1" defer></script>
-        <script src="ui_bindings.js?v=20260808-ui-bindings-v1" defer></script>
+        <script src="src/js/app/main.js?v=20260808-main-v1" defer></script>
+        <script src="src/js/ui/ui_bindings.js?v=20260808-ui-bindings-v1" defer></script>
     </body>
 </html>

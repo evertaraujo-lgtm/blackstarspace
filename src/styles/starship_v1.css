@@ -565,7 +565,8 @@ select {
 @media (max-width: 720px) {
     #hud {
         position: fixed;
-        left: max(8px, env(safe-area-inset-left));
+        right: max(8px, env(safe-area-inset-right));
+        left: auto;
         top: max(8px, env(safe-area-inset-top));
         width: min(250px, calc(100vw - 16px));
         max-height: calc(100dvh - 16px);
@@ -623,8 +624,54 @@ select {
     /* These desktop telemetry overlays leave no useful simulator area on a
        phone. Their information remains available through the modal panels. */
     #graphTimeline,
-    #activeControllerIndicator,
+    #activeControllerIndicator {
+        display: none;
+    }
+
+    /* Keep instance selection available without covering the flight view. */
     #instanceTracker {
+        right: max(8px, env(safe-area-inset-right));
+        top: 50%;
+        bottom: auto;
+        width: min(158px, calc(100vw - 16px));
+        padding: 5px;
+        transform: translateY(-50%);
+        border-radius: 8px;
+    }
+
+    .instanceTrackerHeader {
+        display: none;
+    }
+
+    #instanceTrackerList {
+        gap: 4px;
+    }
+
+    .instanceCard {
+        grid-template-columns: 30px minmax(0, 1fr);
+        gap: 5px;
+        min-height: 42px;
+        padding: 3px 4px;
+    }
+
+    .instanceCard canvas {
+        width: 28px;
+        height: 34px;
+    }
+
+    .instanceCardName {
+        font-size: 10px;
+    }
+
+    .instanceCardMeta,
+    .instanceCardFollow {
+        display: none;
+    }
+    
+    /* Em mobile, os botões de speed e start são movidos para canvas */
+    .speedControls,
+    #startBtn,
+    #pauseBtn {
         display: none;
     }
 

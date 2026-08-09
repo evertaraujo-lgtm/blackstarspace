@@ -1145,6 +1145,201 @@ function drawVehicleEngineConfigurationHud(x, y, width, height, profile, state) 
     ctx.restore();
 }
 
+function drawSpaceXTelemetryHudMobile() {
+    const hudFont = "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
+    const width = c.width;
+    const height = c.height;
+    
+    const altitude = Math.max(0, nav?.z ?? s.z);
+    const speedKmh = Math.hypot(nav?.vx ?? s.vx, nav?.vz ?? s.vz) * 3.6;
+    const power = s.engineOn ? s.throttle * 100 : 0;
+    const angleDegs = (nav?.a ?? s.a) * 57.3;
+    const vzMs = nav?.vz ?? s.vz;
+    const qPa = nav?.q ?? 0;
+
+    // Painel visual dos 6 painéis à esquerda
+    const leftPanelX = 8;
+    const startY = 20;
+    const gaugeRadius = 18;
+    const spacingY = 50;
+    
+    const gauges = [
+        { label: "VEL", value: `${speedKmh.toFixed(0)}`, unit: "km/h", y: startY },
+        { label: "ALT", value: `${altitude.toFixed(0)}`, unit: "m", y: startY + spacingY },
+        { label: "POT", value: `${power.toFixed(0)}`, unit: "%", y: startY + spacingY * 2 },
+        { label: "ANG", value: `${angleDegs.toFixed(0)}`, unit: "°", y: startY + spacingY * 3 },
+        { label: "VZ", value: `${vzMs.toFixed(1)}`, unit: "m/s", y: startY + spacingY * 4 },
+        { label: "Q", value: `${qPa.toFixed(0)}`, unit: "Pa", y: startY + spacingY * 5 },
+    ];
+
+    ctx.save();
+
+    // Desenha os 6 painéis redondos na esquerda
+    gauges.forEach((gauge) => {
+        const gaugeX = leftPanelX + gaugeRadius + 6;
+        
+        // Círculo do painel
+        ctx.strokeStyle = "rgba(243, 249, 252, 0.7)";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.arc(gaugeX, gauge.y, gaugeRadius, 0, Math.PI * 2);
+        ctx.stroke();
+        
+        // Label (topo)
+        ctx.textAlign = "center";
+        ctx.fillStyle = "rgba(235, 246, 252, 0.8)";
+        ctx.font = `600 6px ${hudFont}`;
+        ctx.fillText(gauge.label, gaugeX, gauge.y - 6);
+        
+        // Valor (centro)
+        ctx.fillStyle = "#ffffff";
+        ctx.font = `700 10px ${hudFont}`;
+        ctx.fillText(gauge.value, gaugeX, gauge.y + 3);
+        
+        // Unidade (bottom)
+        ctx.fillStyle = "rgba(235, 246, 252, 0.6)";
+        ctx.font = `600 5px ${hudFont}`;
+        ctx.fillText(gauge.unit, gaugeX, gauge.y + 11);
+    });
+
+    // Arco de estágios no centro-topo
+    const missionHud = controlState?.missionHud ?? flightController.idleCommand().missionHud;
+    const stages = missionHud.stages;
+    let activeStage = clamp(missionHud.activeStage, 0, stages.length - 1);
+    let completedStage = clamp(missionHud.completedStage, 0, stages.length - 1);
+    const terminalMission = s.captured || s.waterLandingCertified || (s.landingSuccess === true && s.end);
+    if (terminalMission) {
+        activeStage = stages.length - 1;
+        completedStage = stages.length - 1;
+    }
+
+    const arcStart = { x: width * 0.4, y: 35 };
+    const arcControl = { x: width * 0.5, y: 5 };
+    const arcEnd = { x: width * 0.6, y: 35 };
+    const bezierPoint = (t) => ({
+        x: (1 - t) ** 2 * arcStart.x + 2 * (1 - t) * t * arcControl.x + t ** 2 * arcEnd.x,
+        y: (1 - t) ** 2 * arcStart.y + 2 * (1 - t) * t * arcControl.y + t ** 2 * arcEnd.y,
+    });
+
+    ctx.strokeStyle = "rgba(235, 246, 252, 0.6)";
+    ctx.lineWidth = 1.2;
+    ctx.beginPath();
+    ctx.moveTo(arcStart.x, arcStart.y);
+    ctx.quadraticCurveTo(arcControl.x, arcControl.y, arcEnd.x, arcEnd.y);
+    ctx.stroke();
+
+    stages.forEach((stage, index) => {
+        const point = bezierPoint(index / Math.max(1, stages.length - 1));
+        const complete = index <= completedStage;
+        const active = index === activeStage && !terminalMission;
+        ctx.fillStyle = complete ? "#ffffff" : active ? "#ffb05e" : "rgba(9, 16, 22, 0.88)";
+        ctx.strokeStyle = active ? "#ffb05e" : complete ? "#ffffff" : "rgba(235, 246, 252, 0.68)";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.arc(point.x, point.y, active ? 3.5 : complete ? 3 : 2.5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+    });
+
+    // Sobrepor gradiente no topo e bottom para suavizar
+    const topGradient = ctx.createLinearGradient(0, 0, 0, 100);
+    topGradient.addColorStop(0, "rgba(2, 7, 13, 0.8)");
+    topGradient.addColorStop(1, "rgba(2, 7, 13, 0)");
+    ctx.fillStyle = topGradient;
+    ctx.fillRect(0, 0, width, 60);
+
+    const bottomGradient = ctx.createLinearGradient(0, height - 120, 0, height);
+    bottomGradient.addColorStop(0, "rgba(2, 7, 13, 0)");
+    bottomGradient.addColorStop(1, "rgba(2, 7, 13, 0.94)");
+    ctx.fillStyle = bottomGradient;
+    ctx.fillRect(0, height - 120, width, 120);
+
+    // Tempo no bottom centralizado
+    ctx.textAlign = "center";
+    ctx.fillStyle = "#ffffff";
+    ctx.font = `700 26px ${hudFont}`;
+    ctx.fillText(getMissionClockDisplay(), width * 0.5, height - 60);
+
+    // Botões de controle no bottom: velocidade acelerada e start
+    const btnStartY = height - 42;
+    const btnHeight = 28;
+    const btnSpacing = 8;
+    const speedBtnWidth = 40;
+    const startBtnWidth = 70;
+    const totalBtnWidth = speedBtnWidth * 3 + startBtnWidth + btnSpacing * 3;
+    const startBtnX = (width - totalBtnWidth) / 2;
+    
+    const speedMultipliers = [1, 5, 100];
+    speedMultipliers.forEach((multiplier, index) => {
+        const btnX = startBtnX + index * (speedBtnWidth + btnSpacing);
+        const isActive = multiplier === sim;
+        
+        ctx.fillStyle = isActive ? "rgba(251, 176, 94, 0.9)" : "rgba(100, 140, 170, 0.4)";
+        ctx.strokeStyle = isActive ? "#ffb05e" : "rgba(200, 220, 240, 0.5)";
+        ctx.lineWidth = 1.5;
+        ctx.fillRect(btnX, btnStartY, speedBtnWidth, btnHeight);
+        ctx.strokeRect(btnX, btnStartY, speedBtnWidth, btnHeight);
+        
+        ctx.fillStyle = isActive ? "#ffffff" : "rgba(220, 240, 255, 0.7)";
+        ctx.font = `600 11px ${hudFont}`;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(`${multiplier}x`, btnX + speedBtnWidth / 2, btnStartY + btnHeight / 2);
+    });
+
+    // Botão START/PAUSE (posição à direita dos botões de speed)
+    const startBtnXPos = startBtnX + speedBtnWidth * 3 + btnSpacing * 3;
+    const isRunning = started && !paused;
+    ctx.fillStyle = isRunning ? "rgba(121, 245, 205, 0.3)" : "rgba(100, 160, 110, 0.4)";
+    ctx.strokeStyle = isRunning ? "#79f5cd" : "rgba(150, 200, 160, 0.6)";
+    ctx.lineWidth = 1.5;
+    ctx.fillRect(startBtnXPos, btnStartY, startBtnWidth, btnHeight);
+    ctx.strokeRect(startBtnXPos, btnStartY, startBtnWidth, btnHeight);
+    
+    ctx.fillStyle = isRunning ? "#ffffff" : "rgba(220, 240, 255, 0.8)";
+    ctx.font = `600 11px ${hudFont}`;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(isRunning ? "PAUSE" : "START", startBtnXPos + startBtnWidth / 2, btnStartY + btnHeight / 2);
+
+    // Botão discreto para selecionar instâncias (canto superior direito)
+    const btnX = width - 36;
+    const btnY = 16;
+    const btnSize = 22;
+    
+    ctx.fillStyle = "rgba(243, 249, 252, 0.15)";
+    ctx.strokeStyle = "rgba(243, 249, 252, 0.4)";
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.arc(btnX, btnY, btnSize / 2, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+    
+    ctx.fillStyle = "rgba(243, 249, 252, 0.8)";
+    ctx.font = `600 11px ${hudFont}`;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText("⚙", btnX, btnY);
+
+    // Armazenar posições dos botões para clique
+    window.mobileHudButtons = {
+        speeds: speedMultipliers.map((mult, idx) => ({
+            x: startBtnX + idx * (speedBtnWidth + btnSpacing),
+            y: btnStartY,
+            w: speedBtnWidth,
+            h: btnHeight,
+            multiplier: mult,
+        })),
+        start: { x: startBtnXPos, y: btnStartY, w: startBtnWidth, h: btnHeight },
+        instances: { x: btnX, y: btnY, r: btnSize / 2 },
+    };
+
+    ctx.textAlign = "start";
+    ctx.textBaseline = "alphabetic";
+    ctx.restore();
+}
+
+
 function drawSpaceXTelemetryHud() {
     const hudFont = "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
     const height = 138;
@@ -1320,8 +1515,14 @@ function drawSpaceXTelemetryHud() {
 }
 
 function drawFlightTelemetryBar() {
+    const isMobileViewport = window.matchMedia("(max-width: 720px)").matches;
+    
     if (telemetryHudStyle === "spacex") {
-        drawSpaceXTelemetryHud();
+        if (isMobileViewport) {
+            drawSpaceXTelemetryHudMobile();
+        } else {
+            drawSpaceXTelemetryHud();
+        }
         return;
     }
 
@@ -1602,45 +1803,50 @@ function draw() {
     drawTowerArms(groundY);
     drawCollisionMarkers();
 
-    const graphX = c.width - 360;
-    graph(graphX, 30, 340, 55, "ang", {
-        floor: 0,
-        ceiling: 180,
-        minSpan: 12,
-        defaultMin: 0,
-        defaultMax: 180,
-        color: "#0af",
-        title: "Ângulo",
-    });
-    graph(graphX, 105, 340, 55, "th", {
-        floor: 0,
-        ceiling: 100,
-        minSpan: 8,
-        defaultMin: 0,
-        defaultMax: 100,
-        color: "#ff9e4a",
-        title: "Potência do motor",
-    });
-    graph(graphX, 180, 340, 55, "vz", {
-        minSpan: 12,
-        defaultMin: -20,
-        defaultMax: 20,
-        color: "#f0f",
-        title: "Velocidade vertical",
-    });
-    graph(graphX, 255, 340, 55, "alt", {
-        floor: 0,
-        minSpan: 50,
-        defaultMin: 0,
-        defaultMax: 100,
-        color: "#ff0",
-        title: "Altitude",
-    });
-    // The local flight plot lives below the right-side telemetry graphs.
-    drawLocalTrajectoryChart(graphX, 390, 340, 120);
-    drawLandingResult(graphX, 525, 340);
+    // Em modo mobile, mostra apenas o HUD compacto (SpaceX style é ideal para celular)
+    const isMobileViewport = window.matchMedia("(max-width: 720px)").matches;
+    if (!isMobileViewport) {
+        const graphX = c.width - 360;
+        graph(graphX, 30, 340, 55, "ang", {
+            floor: 0,
+            ceiling: 180,
+            minSpan: 12,
+            defaultMin: 0,
+            defaultMax: 180,
+            color: "#0af",
+            title: "Ângulo",
+        });
+        graph(graphX, 105, 340, 55, "th", {
+            floor: 0,
+            ceiling: 100,
+            minSpan: 8,
+            defaultMin: 0,
+            defaultMax: 100,
+            color: "#ff9e4a",
+            title: "Potência do motor",
+        });
+        graph(graphX, 180, 340, 55, "vz", {
+            minSpan: 12,
+            defaultMin: -20,
+            defaultMax: 20,
+            color: "#f0f",
+            title: "Velocidade vertical",
+        });
+        graph(graphX, 255, 340, 55, "alt", {
+            floor: 0,
+            minSpan: 50,
+            defaultMin: 0,
+            defaultMax: 100,
+            color: "#ff0",
+            title: "Altitude",
+        });
+        // The local flight plot lives below the right-side telemetry graphs.
+        drawLocalTrajectoryChart(graphX, 390, 340, 120);
+        drawLandingResult(graphX, 525, 340);
+        drawSeparatedInstanceHud();
+    }
+    // HUD SpaceX é compacto e perfeito para mobile
     drawFlightTelemetryBar();
-    drawSeparatedInstanceHud();
     updateActiveControllerIndicator();
     updateInstanceTracker();
     if (isProbeSelected()) updateProbeDockingStatusOutputs();
@@ -1749,6 +1955,7 @@ function draw() {
         drawStarshipEngineLayout,
         drawEngineConfigurationHud,
         drawVehicleEngineConfigurationHud,
+        drawSpaceXTelemetryHudMobile,
         drawSpaceXTelemetryHud,
         drawFlightTelemetryBar,
     });

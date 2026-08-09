@@ -17,7 +17,14 @@
     }
 
     syncMobileHudLayout(mobileViewport.matches);
-    mobileViewport.addEventListener("change", (event) => syncMobileHudLayout(event.matches));
+    // Safari versions still common on mobile expose the legacy listener API
+    // on MediaQueryList. Falling back prevents the UI bindings from aborting
+    // during startup on those devices.
+    if (typeof mobileViewport.addEventListener === "function") {
+        mobileViewport.addEventListener("change", (event) => syncMobileHudLayout(event.matches));
+    } else if (typeof mobileViewport.addListener === "function") {
+        mobileViewport.addListener((event) => syncMobileHudLayout(event.matches));
+    }
 
     speedButtons.forEach((button) => {
         button.addEventListener("click", () => { sim = Number(button.dataset.speed); updateSimulationSpeedUI(); });
@@ -142,9 +149,93 @@
     loadProtocolUplinkBtn.addEventListener("click", () => { protocolUplinkOverrideText.value = JSON.stringify(protocolState.shipUplinkRaw, null, 2); protocolUplinkOverrideEnabled.checked = true; refreshProtocolTransport(); });
     loadProtocolDownlinkBtn.addEventListener("click", () => { protocolDownlinkOverrideText.value = JSON.stringify(protocolState.platformDownlinkRaw, null, 2); protocolDownlinkOverrideEnabled.checked = true; refreshProtocolTransport(); });
     timeScroll.addEventListener("input", () => { telemetryStore.setGraphOffset(timeScroll.value); graphOffset = telemetryStore.graphOffset; graphFollowingLive = telemetryStore.followingLive; });
-    c.addEventListener("pointerdown", selectStandaloneLandingTarget);
+    
+    c.addEventListener("pointerdown", (event) => {
+        const rect = c.getBoundingClientRect();
+        const pointerX = event.clientX - rect.left;
+        const pointerY = event.clientY - rect.top;
+        
+        // Controles em mobile (velocidade, start, instâncias)
+        const isMobileViewport = mobileViewport.matches;
+        if (isMobileViewport && telemetryHudStyle === "spacex" && window.mobileHudButtons) {
+            const btnInfo = window.mobileHudButtons;
+            
+            // Botão de instâncias
+            const instBtn = btnInfo.instances;
+            if (instBtn && Math.hypot(pointerX - instBtn.x, pointerY - instBtn.y) <= instBtn.r) {
+                instanceTracker.hidden = !instanceTracker.hidden;
+                return;
+            }
+            
+            // Botões de velocidade
+            if (btnInfo.speeds) {
+                for (const speedBtn of btnInfo.speeds) {
+                    if (pointerX >= speedBtn.x && pointerX <= speedBtn.x + speedBtn.w &&
+                        pointerY >= speedBtn.y && pointerY <= speedBtn.y + speedBtn.h) {
+                        sim = speedBtn.multiplier;
+                        updateSimulationSpeedUI();
+                        return;
+                    }
+                }
+            }
+            
+            // Botão START/PAUSE
+            const startBtn = btnInfo.start;
+            if (startBtn && pointerX >= startBtn.x && pointerX <= startBtn.x + startBtn.w &&
+                pointerY >= startBtn.y && pointerY <= startBtn.y + startBtn.h) {
+                if ((started && !s.end) || launchCountdownTimer !== null) return;
+                const countdownSeconds = Math.max(0, Math.min(60, Number(launchCountdownInput.value) || 0));
+                if (countdownSeconds === 0) { beginMissionAfterCountdown(); return; }
+                launchCountdownEndsAt = performance.now() + countdownSeconds * 1000;
+                launchCountdownInput.disabled = true; startBtn.disabled = true; updateProbeDockingUI(); updateLaunchCountdownButton();
+                launchCountdownTimer = window.setTimeout(beginMissionAfterCountdown, countdownSeconds * 1000);
+                return;
+            }
+        }
+        
+        selectStandaloneLandingTarget(event);
+    });
     c.addEventListener("mousemove", (event) => {
-        const rect = c.getBoundingClientRect(); const pointerX = event.clientX - rect.left; const pointerY = event.clientY - rect.top;
+        const rect = c.getBoundingClientRect(); 
+        const pointerX = event.clientX - rect.left; 
+        const pointerY = event.clientY - rect.top;
+        
+        // Cursor pointer if hovering mobile HUD buttons
+        const isMobileViewport = mobileViewport.matches;
+        if (isMobileViewport && telemetryHudStyle === "spacex" && window.mobileHudButtons) {
+            const btnInfo = window.mobileHudButtons;
+            
+            // Instâncias button
+            if (btnInfo.instances) {
+                const instBtn = btnInfo.instances;
+                if (Math.hypot(pointerX - instBtn.x, pointerY - instBtn.y) <= instBtn.r) {
+                    c.style.cursor = "pointer";
+                    return;
+                }
+            }
+            
+            // Speed buttons
+            if (btnInfo.speeds) {
+                for (const speedBtn of btnInfo.speeds) {
+                    if (pointerX >= speedBtn.x && pointerX <= speedBtn.x + speedBtn.w &&
+                        pointerY >= speedBtn.y && pointerY <= speedBtn.y + speedBtn.h) {
+                        c.style.cursor = "pointer";
+                        return;
+                    }
+                }
+            }
+            
+            // Start button
+            if (btnInfo.start) {
+                const startBtn = btnInfo.start;
+                if (pointerX >= startBtn.x && pointerX <= startBtn.x + startBtn.w &&
+                    pointerY >= startBtn.y && pointerY <= startBtn.y + startBtn.h) {
+                    c.style.cursor = "pointer";
+                    return;
+                }
+            }
+        }
+        
         c.style.cursor = isFlightControlBuildingHit(pointerX, pointerY) ? "pointer" : isLinkedMode() ? "default" : "crosshair";
     });
 })();

@@ -39,7 +39,7 @@
             this.radioLinkWasActive = false;
             this.controlAntennaImage = new Image();
             this.controlAntennaImage.addEventListener("load", () => this.prepareControlAntennaImage());
-            this.controlAntennaImage.src = "img/antena.png";
+            this.controlAntennaImage.src = "assets/images/antena.png";
         }
 
         longitudeAt(worldX) {

@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite --host 0.0.0.0 --open /starship_v1.html",
     "start": "npm run dev",
-    "test": "node --test physical_core.test.js",
+    "test": "node --test tests/physical_core.test.js",
     "preview": "vite preview --host 0.0.0.0"
   },
   "devDependencies": {
@@ -14,5 +14,8 @@
   },
   "engines": {
     "node": ">=20"
+  },
+  "dependencies": {
+    "puppeteer": "^24.43.1"
   }
 }
