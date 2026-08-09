@@ -5,6 +5,9 @@
     function syncMobileHudLayout(matchesMobileViewport) {
         if (matchesMobileViewport) {
             hud.classList.add("is-collapsed");
+            // The canvas gear is the mobile entry point for this panel. Keep
+            // it closed initially so its first tap always opens the menu.
+            instanceTracker.hidden = true;
             toggleHudBtn.textContent = "☰";
             toggleHudBtn.title = "Abrir controles";
             toggleHudBtn.setAttribute("aria-expanded", "false");
@@ -152,8 +155,11 @@
     
     c.addEventListener("pointerdown", (event) => {
         const rect = c.getBoundingClientRect();
-        const pointerX = event.clientX - rect.left;
-        const pointerY = event.clientY - rect.top;
+        // Canvas coordinates can differ from CSS pixels after browser zoom or
+        // a mobile viewport resize. Map the pointer into the drawing space
+        // before checking the canvas-drawn controls.
+        const pointerX = (event.clientX - rect.left) * (c.width / rect.width);
+        const pointerY = (event.clientY - rect.top) * (c.height / rect.height);
         
         // Controles em mobile (velocidade, start, instâncias)
         const isMobileViewport = mobileViewport.matches;
@@ -164,6 +170,7 @@
             const instBtn = btnInfo.instances;
             if (instBtn && Math.hypot(pointerX - instBtn.x, pointerY - instBtn.y) <= instBtn.r) {
                 instanceTracker.hidden = !instanceTracker.hidden;
+                c.style.cursor = "pointer";
                 return;
             }
             
@@ -197,8 +204,8 @@
     });
     c.addEventListener("mousemove", (event) => {
         const rect = c.getBoundingClientRect(); 
-        const pointerX = event.clientX - rect.left; 
-        const pointerY = event.clientY - rect.top;
+        const pointerX = (event.clientX - rect.left) * (c.width / rect.width);
+        const pointerY = (event.clientY - rect.top) * (c.height / rect.height);
         
         // Cursor pointer if hovering mobile HUD buttons
         const isMobileViewport = mobileViewport.matches;
