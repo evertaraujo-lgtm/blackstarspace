@@ -1,9 +1,9 @@
 # BLACK STAR
 ## Bíblia de cânone — Origem, Operários, Buran e consolidação orbital
 
-**Versão:** 1.0  
+**Versão:** 1.1  
 **Atualização:** 9 de outubro de 2026  
-**Escopo:** fatos estabelecidos em conversa sobre a origem da Black Star, sua filosofia, os primeiros cinco voos do programa Buran, a expansão comercial e o marco tripulado de 2026.  
+**Escopo:** fatos estabelecidos em conversa sobre a origem da Black Star, sua filosofia, a chegada de Legaspe à equipe de controles em 2014, os primeiros cinco voos do programa Buran, a expansão comercial e o marco tripulado de 2026.  
 **Status:** documento-base editável. As lacunas estão identificadas deliberadamente.
 
 > **Princípio de continuidade:** o que está marcado como **CÂNONE** foi definido ou acolhido pelo criador da história. O que está em **EM ABERTO** ou **SUGESTÃO** não deve ser tratado como acontecimento confirmado em futuros textos, cenas ou simulações.
@@ -73,6 +73,23 @@ Em algum ponto dessa evolução, o negócio de Augusto enfrentou risco de **fal�
 - **Boca:** responsável pelo salto de visão técnica; chamado inicialmente para melhorar qualidade, concebeu os Operários inspirado pela Salyut 7 e julgou possível construir a arquitetura espacial necessária.
 
 Não inventar sobrenomes, cargos formais, falas literais, datas de encontro ou condições de aquisição das plantas sem decisão posterior do autor.
+
+
+## 2.5 Ever e Engenheiro Legaspe — a origem do controle de pouso (~2014)
+
+**CÂNONE**
+
+Em uma reunião por volta de **2014**, quando a Black Star ainda procurava uma maneira de **recuperar seu propulsor**, **Ever** se recordou das aulas de seu antigo orientador de faculdade, **Engenheiro Legaspe**, e sugeriu convidá-lo para debater a questão.
+
+Legaspe é **engenheiro de computação**, **doutor em Controle**, especialista em **sistemas de controle** e, até então, tinha passado anos atuando como **professor de Engenharia**. Uma de suas ideias favoritas como instrumento de ensino e estudo era o **pêndulo invertido**. Esse conceito serviu como o **pontapé inicial** para a abordagem da estabilidade e do controle do pouso propulsivo da Black Star.
+
+O convite nasceu como **debate técnico**. Posteriormente, **Legaspe integrou permanentemente o time de controles**, assumindo responsabilidade pelo **sistema de controle do pouso propulsivo**.
+
+**Coerência técnica:** um booster não é literalmente um pêndulo com pivô fixo. A analogia ajuda a pensar a estabilização por realimentação, mas uma solução real também exige controle de posição, velocidades, atitude, massa variável, atrasos dos motores e margens de segurança. Não atribuir a Legaspe um algoritmo específico que o autor ainda não escolheu.
+
+**Coerência de personagens:** o papel do professor não apaga Boca nem Augusto. **Ever** identifica a conexão com o conhecimento acadêmico e convida Legaspe; **Boca** permanece como idealizador dos Operários e defensor da viabilidade do programa; **Augusto** carrega o risco do negócio; **Legaspe** traz a especialização para fazer a descida controlada funcionar.
+
+Ver [perfil de Legaspe e cena dramatizada](personagens/Engenheiro_Legaspe.md). As falas ilustrativas no perfil são **sugestões narrativas**, não diálogos canonizados.
 
 ---
 
@@ -241,6 +258,7 @@ Não estabelecer automaticamente números de voos, tripulantes, destino orbital 
 10. **A comparação com o An-225 diz respeito a cargas grandes e excepcionais**, não à inexistência histórica de todas as outras tecnologias de retorno orbital.
 11. **Não anacronizar a inspiração tecnológica:** elementos parecidos com o Super Heavy/captura por torre já aparecem no universo da Black Star em 2019; tratá-los como desenvolvimento próprio inspirado por ideias anteriores, não como cópia de uma captura real da SpaceX ocorrida anos depois.
 12. **Política de divulgação:** primeiro demonstrar, depois comunicar.
+13. **Legaspe chega por convite de Ever por volta de 2014.** O ex-orientador, especialista e doutor em Controle, usa o pêndulo invertido como ponto de partida conceitual para o controle de pouso e passa a integrar permanentemente a equipe. Não lhe atribuir feitos, algoritmos específicos ou falas sem confirmação.
 
 ---
 
@@ -250,6 +268,7 @@ Não estabelecer automaticamente números de voos, tripulantes, destino orbital 
 - Razão específica das falhas originais dos servoacionamentos e como Boca as resolveu.
 - Como Augusto obteve as plantas do Buran e em qual estado de completude estavam.
 - Financiamento inicial e decisão exata que tirou Augusto do risco de falência.
+- Detalhes biográficos de Legaspe, sua universidade, a implementação concreta de seu controle e sua presença nos voos.
 - Datas precisas dos voos 01–04, seus intervalos, altitude dos ensaios 02–04 e o número de recondicionamentos.
 - Nome, propulsão, massas, diâmetros e parâmetros do booster de 33 motores.
 - Projeto e operação dos paraquedas de emergência para massa e velocidades do protótipo.
@@ -262,7 +281,7 @@ Não estabelecer automaticamente números de voos, tripulantes, destino orbital 
 
 # 9. Resumo executivo de uma página
 
-A Black Star surgiu do encontro entre **Augusto**, fornecedor brasileiro de sistemas servoacionados para satélites com problemas de qualidade, e **Boca**, chamado originalmente apenas para ajudar a corrigir essas falhas. Inspirado pela história da **Salyut 7**, Boca concebeu os **Operários**, robôs de manutenção orbital. A ideia cresceu para recuperação de objetos e lixo espacial, com reciclagem de parte dos materiais ainda em órbita, mas surgiu uma lacuna logística: era necessário devolver cargas e componentes à Terra. Augusto possuía plantas do **Buran**, e Boca avaliou como possível transformar aquela oportunidade em um sistema operacional, embora faltasse um lançador. Sob forte pressão financeira, Augusto apostou no projeto. A Black Star desenvolveu então seu próprio propulsor reutilizável, concebido para **33 motores** e captura por torre.
+A Black Star surgiu do encontro entre **Augusto**, fornecedor brasileiro de sistemas servoacionados para satélites com problemas de qualidade, e **Boca**, chamado originalmente apenas para ajudar a corrigir essas falhas. Inspirado pela história da **Salyut 7**, Boca concebeu os **Operários**, robôs de manutenção orbital. A ideia cresceu para recuperação de objetos e lixo espacial, com reciclagem de parte dos materiais ainda em órbita, mas surgiu uma lacuna logística: era necessário devolver cargas e componentes à Terra. Augusto possuía plantas do **Buran**, e Boca avaliou como possível transformar aquela oportunidade em um sistema operacional, embora faltasse um lançador. Sob forte pressão financeira, Augusto apostou no projeto. A Black Star desenvolveu então seu próprio propulsor reutilizável, concebido para **33 motores** e captura por torre. Por volta de **2014**, **Ever** convidou seu antigo orientador, **Engenheiro Legaspe**, engenheiro de computação e doutor em Controle, para discutir a recuperação do propulsor. A analogia do **pêndulo invertido** iniciou a reflexão de controle; Legaspe integrou-se permanentemente à equipe responsável pelo pouso propulsivo.
 
 Os **quatro primeiros voos** provaram progressivamente amerissagem, precisão de captura simulada, pouso terrestre de emergência e redundância de reignição. No **voo 05 (~2019)**, um **Buran real não tripulado** foi colocado em órbita por um booster de 33 motores; o Buran regressou e pousou em pista, enquanto o propulsor foi capturado pela torre. O sucesso atraiu grandes investimentos e transformou a Black Star numa referência potencial de **transporte de grandes cargas de volta da órbita**, o **“Antonov An-225 do espaço”**. Seu **primeiro voo tripulado** ocorreu em **2026**. A empresa permanece definida por um lema informal: **não prometer antecipadamente; demonstrar primeiro**.
 
