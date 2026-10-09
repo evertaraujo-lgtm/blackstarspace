@@ -1,10 +1,11 @@
 # BLACK STAR
 ## Bíblia de cânone — Origem, Operários, Buran e consolidação orbital
 
-**Versão:** 1.1  
+**Versão:** 1.2  
 **Atualização:** 9 de outubro de 2026  
 **Escopo:** fatos estabelecidos em conversa sobre a origem da Black Star, sua filosofia, a chegada de Legaspe à equipe de controles em 2014, os primeiros cinco voos do programa Buran, a expansão comercial e o marco tripulado de 2026.  
 **Status:** documento-base editável. As lacunas estão identificadas deliberadamente.
+**Personagens:** [índice de fichas](personagens/README.md), com capítulos especiais [Bruno, o Construtor](capitulos/Bruno_O_Construtor.md) e [Rafa, o Curioso](capitulos/Rafa_O_Curioso.md).
 
 > **Princípio de continuidade:** o que está marcado como **CÂNONE** foi definido ou acolhido pelo criador da história. O que está em **EM ABERTO** ou **SUGESTÃO** não deve ser tratado como acontecimento confirmado em futuros textos, cenas ou simulações.
 
@@ -90,6 +91,23 @@ O convite nasceu como **debate técnico**. Posteriormente, **Legaspe integrou pe
 **Coerência de personagens:** o papel do professor não apaga Boca nem Augusto. **Ever** identifica a conexão com o conhecimento acadêmico e convida Legaspe; **Boca** permanece como idealizador dos Operários e defensor da viabilidade do programa; **Augusto** carrega o risco do negócio; **Legaspe** traz a especialização para fazer a descida controlada funcionar.
 
 Ver [perfil de Legaspe e cena dramatizada](personagens/Engenheiro_Legaspe.md). As falas ilustrativas no perfil são **sugestões narrativas**, não diálogos canonizados.
+
+
+## 2.6 Ever, Bruno e Rafa — formação do trio e Projeto Horizonte
+
+**CÂNONE LITERÁRIO:** os episódios e os diálogos abaixo foram estabelecidos nos capítulos especiais fornecidos pelo autor. As sínteses não substituem os textos completos.
+
+- **Ever e Rafa (Rafael)** se aproximaram na **quinta série**, quando ficaram curiosos diante de uma aranha que causou tumulto na classe. Ever gostava de desmontar objetos; Rafa, de questionar ideias e respostas.
+- **Ever e Bruno** estreitaram amizade por meio da paixão por carros, sobretudo **Opalas**, e conversas sobre mecânica na calçada de casa. Bruno chegava de bicicleta, conversava por horas e gostava de desmontar e construir.
+- **Bruno** foi criado pela mãe numa família simples, era próximo do primo e entrou no **SENAI como menor aprendiz**, tanto para aprender uma profissão quanto para ajudar financeiramente em casa. É o mais brincalhão do trio e, ao mesmo tempo, tímido diante de interesses amorosos.
+- **Rafa** nasceu numa família simples e interessou-se cedo por guitarra, rock e astronomia, especialmente depois de conhecer a trajetória de **Brian May**. Em **2003** ingressou em **Mecânica no SENAI de Mairinque** e depois também em **Elétrica no SENAI de Alumínio**.
+- A dinâmica do trio é resumida pela frase **“Ever planejava, Bruno executava, Rafa questionava.”**
+- O **Projeto Horizonte** surgiu **discretamente entre alguns alunos**; Bruno abraçou a oportunidade de construir máquinas improváveis. **Boca**, ao selecionar jovens para projetos internos, percebeu em Rafa uma capacidade rara de questionar escolhas e aprimorar projetos. A existência de iniciativas reservadas **não transforma a Black Star inteira numa agência clandestina**.
+- Na Black Star, Bruno ficou conhecido como **“O Construtor”**; muito tempo depois, lideraria a **integração de módulos recuperados da ISS no estaleiro orbital**. Um capítulo futuro mostra uma **Starship em montagem por robôs** nesse estaleiro.
+- O capítulo de Rafa apresenta **Ever, Bruno e Rafa juntos em uma viagem orbital a bordo do Buran**, olhando para o estaleiro. **A data dessa missão não foi fixada**: não presumir que seja automaticamente o primeiro voo tripulado de 2026.
+
+**Referências primárias literárias:** [Bruno, o Construtor](capitulos/Bruno_O_Construtor.md) e [Rafa, o Curioso](capitulos/Rafa_O_Curioso.md).  
+**Fichas individuais:** [Dossiê de personagens](personagens/README.md).
 
 ---
 
@@ -259,6 +277,9 @@ Não estabelecer automaticamente números de voos, tripulantes, destino orbital 
 11. **Não anacronizar a inspiração tecnológica:** elementos parecidos com o Super Heavy/captura por torre já aparecem no universo da Black Star em 2019; tratá-los como desenvolvimento próprio inspirado por ideias anteriores, não como cópia de uma captura real da SpaceX ocorrida anos depois.
 12. **Política de divulgação:** primeiro demonstrar, depois comunicar.
 13. **Legaspe chega por convite de Ever por volta de 2014.** O ex-orientador, especialista e doutor em Controle, usa o pêndulo invertido como ponto de partida conceitual para o controle de pouso e passa a integrar permanentemente a equipe. Não lhe atribuir feitos, algoritmos específicos ou falas sem confirmação.
+14. **Bruno e Rafa têm capítulos de origem já definidos.** Ever, Bruno e Rafa formam um trio de infância e formação técnica; respeitar SENAI, Projeto Horizonte, características pessoais e futuros eventos do estaleiro conforme os capítulos.
+15. **O Projeto Horizonte e trabalhos sigilosos não tornam a Black Star clandestina.** A organização continua pública e subestimada; alguns projetos eram reservados.
+16. **Não datar automaticamente a primeira órbita conjunta do trio em 2026.** A missão vista no capítulo de Rafa não recebeu ano explícito.
 
 ---
 
@@ -276,6 +297,8 @@ Não estabelecer automaticamente números de voos, tripulantes, destino orbital 
 - Se o motor com anomalia durante o voo 05 (sugerido em narrativa anterior) entra ou não no cânone.
 - Cronologia dos investimentos, voos comerciais, primeiros Operários operacionais e reciclagem orbital.
 - Objetivo, tripulação e trajetória do voo tripulado de 2026.
+- Data exata da primeira missão orbital conjunta de Ever, Bruno e Rafa; sua possível relação com o voo tripulado de 2026.
+- Data da integração de módulos recuperados da ISS ao estaleiro e detalhes do Projeto Horizonte.
 
 ---
 
