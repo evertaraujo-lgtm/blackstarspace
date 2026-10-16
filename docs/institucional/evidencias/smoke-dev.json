@@ -1,0 +1,96 @@
+{
+  "resultado": "aprovado",
+  "resultados": [
+    {
+      "rota": "/",
+      "largura": 1440,
+      "imagens": "ok",
+      "overflow": false
+    },
+    {
+      "rota": "/pesquisa",
+      "largura": 1440,
+      "imagens": "ok",
+      "overflow": false
+    },
+    {
+      "rota": "/simulador",
+      "largura": 1440,
+      "imagens": "ok",
+      "overflow": false
+    },
+    {
+      "rota": "/",
+      "largura": 768,
+      "imagens": "ok",
+      "overflow": false
+    },
+    {
+      "rota": "/pesquisa",
+      "largura": 768,
+      "imagens": "ok",
+      "overflow": false
+    },
+    {
+      "rota": "/simulador",
+      "largura": 768,
+      "imagens": "ok",
+      "overflow": false
+    },
+    {
+      "rota": "/",
+      "largura": 390,
+      "imagens": "ok",
+      "overflow": false
+    },
+    {
+      "rota": "/pesquisa",
+      "largura": 390,
+      "imagens": "ok",
+      "overflow": false
+    },
+    {
+      "rota": "/simulador",
+      "largura": 390,
+      "imagens": "ok",
+      "overflow": false
+    },
+    {
+      "rota": "/",
+      "largura": 320,
+      "imagens": "ok",
+      "overflow": false
+    },
+    {
+      "rota": "/pesquisa",
+      "largura": 320,
+      "imagens": "ok",
+      "overflow": false
+    },
+    {
+      "rota": "/simulador",
+      "largura": 320,
+      "imagens": "ok",
+      "overflow": false
+    },
+    {
+      "pdf": "abre com MIME correto e download idêntico"
+    },
+    {
+      "missao": "preparo, ignição, avanço, pausa, reinício e variante aquática",
+      "tempo": "t = 3.05 s"
+    },
+    {
+      "orbitas": "avanço e reinício"
+    },
+    {
+      "bancada": "seis cenários e avanço"
+    },
+    {
+      "legado": "canvas, iniciar e pausar"
+    }
+  ],
+  "erros": [],
+  "respostasRuins": [],
+  "capturas": "/tmp/blackstarspace-smoke-dev"
+}

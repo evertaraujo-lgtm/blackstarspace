@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta http-equiv="refresh" content="0; url=/starship_v1.html" />
+        <title>Abrindo Starship Engineering Lab…</title>
+        <script>
+            window.location.replace("/starship_v1.html");
+        </script>
+    </head>
+    <body>
+        <p>Abrindo o <a href="/starship_v1.html">Starship Engineering Lab</a>…</p>
+    </body>
+</html>

@@ -1,4 +1,26 @@
-# blackstarspace
+# Site institucional Black Star Space
+
+A raiz agora contém a apresentação institucional; o laboratório é acessado por
+`/simulador`. Pesquisa e artigo em `/pesquisa`. O Protótipo 2 é o simulador
+principal, preservado como build estático; o Protótipo 1 permanece em
+`/starship_v1.html`, com sua lógica original.
+
+```bash
+npm ci
+npm run dev
+npm run build
+npm run verificar:institucional
+npm test
+npm run preview -- --port 4175
+# Com o preview aberto em outro terminal:
+npm run test:institucional
+```
+
+O Hosting publica somente `dist`. Nenhum desses comandos faz deploy.
+Veja [relatório, contrato e validações](docs/institucional/REDESENHO.md) e o
+[procedimento para atualizar o Protótipo 2](docs/institucional/PROTOTIPO_2.md).
+As seções abaixo descrevem a história técnica do simulador legado.
+
 # Black Star Space
 
 **Black Star Space** is a 2D aerospace engineering and flight simulation project built with **HTML, JavaScript and Canvas**.

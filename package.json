@@ -4,10 +4,15 @@
   "private": true,
   "description": "Simulador 2D de engenharia e voo aeroespacial em HTML, JavaScript e Canvas.",
   "scripts": {
-    "dev": "vite --host 0.0.0.0 --open /starship_v1.html",
+    "dev": "vite --host 0.0.0.0",
     "start": "npm run dev",
     "test": "node --test tests/physical_core.test.js",
-    "preview": "vite preview --host 0.0.0.0"
+    "preview": "vite preview --host 0.0.0.0",
+    "dev:simulador": "vite --host 0.0.0.0 --open /starship_v1.html",
+    "build": "vite build",
+    "verificar:institucional": "node scripts/verificar-institucional.mjs",
+    "atualizar:prototipo2": "node scripts/atualizar-prototipo2.mjs",
+    "test:institucional": "node tests/institucional.smoke.mjs"
   },
   "devDependencies": {
     "vite": "^7.0.0"

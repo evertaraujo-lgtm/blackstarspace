@@ -1,0 +1,68 @@
+{
+  "resultado": "aprovado",
+  "resultados": [
+    "Troca automática real após 7 s, sem anúncio automático.",
+    "Teclado, contador, anúncio manual e navegação circular anterior/próximo.",
+    "Navegação manual permanece pausada por mais de um intervalo.",
+    "Retomada e pausa explícitas funcionam.",
+    "Foco em CTA suspende troca sem mover foco.",
+    "Fora da seção, timeout suspenso.",
+    "Reduced motion: sem autoplay/transição; navegação manual disponível.",
+    {
+      "width": 1440,
+      "scroll": 1440,
+      "heroTop": 313.015625,
+      "heroBottom": 715.234375,
+      "headerBottom": 77,
+      "footerTop": 725.234375,
+      "buttons": [
+        44,
+        44,
+        44
+      ]
+    },
+    {
+      "width": 768,
+      "scroll": 768,
+      "heroTop": 351.65625,
+      "heroBottom": 669.59375,
+      "headerBottom": 67,
+      "footerTop": 674.59375,
+      "buttons": [
+        44,
+        44,
+        44
+      ]
+    },
+    {
+      "width": 390,
+      "scroll": 390,
+      "heroTop": 226.125,
+      "heroBottom": 611.46875,
+      "headerBottom": 67,
+      "footerTop": 653.46875,
+      "buttons": [
+        44,
+        44,
+        44
+      ]
+    },
+    {
+      "width": 320,
+      "scroll": 320,
+      "heroTop": 125.53125,
+      "heroBottom": 611.46875,
+      "headerBottom": 67,
+      "footerTop": 653.46875,
+      "buttons": [
+        44,
+        44,
+        44
+      ]
+    },
+    "Falha de recurso mantém a imagem anterior.",
+    "Fallback estático sem JavaScript."
+  ],
+  "erros": [],
+  "http": []
+}

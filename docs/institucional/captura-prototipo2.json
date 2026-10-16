@@ -1,0 +1,84 @@
+{
+  "origem": "https://blackstarspace.web.app/",
+  "verificacao": "HTTP 200, hashes de bytes publicados; SHA de fonte não inferido",
+  "recursos": [
+    {
+      "url": "https://blackstarspace.web.app/tests.html",
+      "caminho": "tests.html",
+      "bytes": 15667,
+      "sha256": "9725c652de444fd75e0a7ac254e8f8f516e18eda682975419d686c4f3bde9c0d"
+    },
+    {
+      "url": "https://blackstarspace.web.app/missao.html",
+      "caminho": "missao.html",
+      "bytes": 6512,
+      "sha256": "7cf49aede1239458b69c90214cd037fd9e0625946713c247fa6440600d91a374"
+    },
+    {
+      "url": "https://blackstarspace.web.app/orbitas.html",
+      "caminho": "orbitas.html",
+      "bytes": 2608,
+      "sha256": "96f227f3d96cfd4112a5efd3c8c65fb95afb355e4dd34200b11aeca84043e65f"
+    },
+    {
+      "url": "https://blackstarspace.web.app/assets/testes-BDWu18xp.js",
+      "caminho": "assets/testes-BDWu18xp.js",
+      "bytes": 92659,
+      "sha256": "2c12021aebf6d55acc891db242c1ce47828a71eb8e426a9617f6faa71ed74f8e"
+    },
+    {
+      "url": "https://blackstarspace.web.app/assets/modulepreload-polyfill-B5Qt9EMX.js",
+      "caminho": "assets/modulepreload-polyfill-B5Qt9EMX.js",
+      "bytes": 711,
+      "sha256": "d2a32840421496e872ade591618d2fa5c33797605d1aec04301717e5a90757d0"
+    },
+    {
+      "url": "https://blackstarspace.web.app/assets/SuperficieEsferica-Cj59H2D-.js",
+      "caminho": "assets/SuperficieEsferica-Cj59H2D-.js",
+      "bytes": 68451,
+      "sha256": "6a3c70fb7062d8146598546db9c92c62665424d0a0eea4622f10f9a504643c42"
+    },
+    {
+      "url": "https://blackstarspace.web.app/assets/ConexoesEletricas-Bw49H-R6.js",
+      "caminho": "assets/ConexoesEletricas-Bw49H-R6.js",
+      "bytes": 98700,
+      "sha256": "66f1136332f61ec46fd74bb0d0feb5e03645c40a25b9a4b570388da9ff93e1ee"
+    },
+    {
+      "url": "https://blackstarspace.web.app/assets/style-CYqJRdwJ.css",
+      "caminho": "assets/style-CYqJRdwJ.css",
+      "bytes": 26912,
+      "sha256": "1866434775fd5296abb37f83e690f30cc64f579a43770cde77a2646d4fe3d1e9"
+    },
+    {
+      "url": "https://blackstarspace.web.app/assets/missao-vSLCc2GG.js",
+      "caminho": "assets/missao-vSLCc2GG.js",
+      "bytes": 42000,
+      "sha256": "f57c6b953e7455b4257a0b08565bceb72188e1dfec5dc7ade1353c35eb0f9672"
+    },
+    {
+      "url": "https://blackstarspace.web.app/assets/CameraFisica2D-BQsOyltP.js",
+      "caminho": "assets/CameraFisica2D-BQsOyltP.js",
+      "bytes": 588,
+      "sha256": "92d322ac9169b92f9e3fe891d21390adfb2d74babecd19f0f1d03387151cef0b"
+    },
+    {
+      "url": "https://blackstarspace.web.app/assets/missao-miQydAZz.css",
+      "caminho": "assets/missao-miQydAZz.css",
+      "bytes": 5050,
+      "sha256": "b3944c2fec6f0568c93007bc1b9b6d6fb722c5f9a54e0201092495ea11d236bf"
+    },
+    {
+      "url": "https://blackstarspace.web.app/assets/orbitas-DHYRGHD8.js",
+      "caminho": "assets/orbitas-DHYRGHD8.js",
+      "bytes": 5498,
+      "sha256": "9476a0048b05fc4efe0efeaa3c6b622c1f0823e66449f2eed36d39c261342717"
+    },
+    {
+      "url": "https://blackstarspace.web.app/assets/orbitas-D3xsGjyj.css",
+      "caminho": "assets/orbitas-D3xsGjyj.css",
+      "bytes": 794,
+      "sha256": "c93d9a0a9275f0e70b2bc99f2531c4f2357f1499784d5d1457c65752f5d6978a"
+    }
+  ]
+}

@@ -1,0 +1,224 @@
+[
+  {
+    "origem": "img/bss-006.png",
+    "sha256": "e9463483699c1fb3ac3f236c89d21ea9f7d69c0ca433887bd570c019149e9cd8",
+    "bytes": 1750684,
+    "versoes": [
+      {
+        "arquivo": "public/media/bss-006.webp",
+        "bytes": 86112,
+        "dimensoes": [
+          1672,
+          941
+        ]
+      },
+      {
+        "arquivo": "public/media/bss-006-840.webp",
+        "bytes": 32304,
+        "dimensoes": [
+          840,
+          473
+        ]
+      }
+    ]
+  },
+  {
+    "origem": "img/emblema.png",
+    "sha256": "9fd248435551e1ab92a2a107d64bce153a7250fee3d8fa26e0bb41f98d25d5ba",
+    "bytes": 1566093,
+    "versoes": [
+      {
+        "arquivo": "public/media/emblema.webp",
+        "bytes": 7258,
+        "dimensoes": [
+          576,
+          432
+        ]
+      }
+    ]
+  },
+  {
+    "origem": "img/engenharia.png",
+    "sha256": "b909a33c5a0b4ea9ac9280419358e0ce0ada5e51773475c91ff6784ad5da09da",
+    "bytes": 2016486,
+    "versoes": [
+      {
+        "arquivo": "public/media/engenharia.webp",
+        "bytes": 158388,
+        "dimensoes": [
+          1672,
+          941
+        ]
+      },
+      {
+        "arquivo": "public/media/engenharia-840.webp",
+        "bytes": 62014,
+        "dimensoes": [
+          840,
+          473
+        ]
+      }
+    ]
+  },
+  {
+    "origem": "img/fabricamotores.png",
+    "sha256": "571e75386c6cdbec2c3bb03cff09cb2f96d8dc79c8e80f4baa31cf150bb14160",
+    "bytes": 2927922,
+    "versoes": [
+      {
+        "arquivo": "public/media/fabricamotores.webp",
+        "bytes": 357212,
+        "dimensoes": [
+          1672,
+          941
+        ]
+      },
+      {
+        "arquivo": "public/media/fabricamotores-840.webp",
+        "bytes": 123106,
+        "dimensoes": [
+          840,
+          473
+        ]
+      }
+    ]
+  },
+  {
+    "origem": "img/inicio.png",
+    "sha256": "559f5e8ab2b9005473b7e4453a10f353e926d69b701e2dc30bb90da164d000be",
+    "bytes": 2122411,
+    "versoes": [
+      {
+        "arquivo": "public/media/inicio.webp",
+        "bytes": 177564,
+        "dimensoes": [
+          1672,
+          941
+        ]
+      },
+      {
+        "arquivo": "public/media/inicio-840.webp",
+        "bytes": 65224,
+        "dimensoes": [
+          840,
+          473
+        ]
+      }
+    ]
+  },
+  {
+    "origem": "img/instalacoes.png",
+    "sha256": "4cbe6d02c97ccdbc781e7ef2732216f00e8e3423de4bcc1701407c8fbc813a6c",
+    "bytes": 2669819,
+    "versoes": [
+      {
+        "arquivo": "public/media/instalacoes.webp",
+        "bytes": 331472,
+        "dimensoes": [
+          1672,
+          941
+        ]
+      },
+      {
+        "arquivo": "public/media/instalacoes-840.webp",
+        "bytes": 112096,
+        "dimensoes": [
+          840,
+          473
+        ]
+      }
+    ]
+  },
+  {
+    "origem": "img/montagem.png",
+    "sha256": "d7306599dd8c579e95233e6a6fbf090b942247be243ed0689af9747b810d1092",
+    "bytes": 2766004,
+    "versoes": [
+      {
+        "arquivo": "public/media/montagem.webp",
+        "bytes": 323588,
+        "dimensoes": [
+          1672,
+          941
+        ]
+      },
+      {
+        "arquivo": "public/media/montagem-840.webp",
+        "bytes": 111620,
+        "dimensoes": [
+          840,
+          473
+        ]
+      }
+    ]
+  },
+  {
+    "origem": "img/oficina.png",
+    "sha256": "a24fa8f08d5686a1b8c902568d46c54db2ff790701582186543d40dc611b8768",
+    "bytes": 2527825,
+    "versoes": [
+      {
+        "arquivo": "public/media/oficina.webp",
+        "bytes": 230950,
+        "dimensoes": [
+          1672,
+          941
+        ]
+      },
+      {
+        "arquivo": "public/media/oficina-840.webp",
+        "bytes": 80894,
+        "dimensoes": [
+          840,
+          473
+        ]
+      }
+    ]
+  },
+  {
+    "origem": "img/pouso-costa.png",
+    "sha256": "ac21ec484ff03cb28c4153ecdba15184c18ee5bc3912259815341249292225cb",
+    "bytes": 2315570,
+    "versoes": [
+      {
+        "arquivo": "public/media/pouso-costa.webp",
+        "bytes": 203858,
+        "dimensoes": [
+          1672,
+          941
+        ]
+      },
+      {
+        "arquivo": "public/media/pouso-costa-840.webp",
+        "bytes": 65940,
+        "dimensoes": [
+          840,
+          473
+        ]
+      }
+    ]
+  },
+  {
+    "origem": "img/robo-orbita.png",
+    "sha256": "f19b9b18b18fd5d1cb6fe3d1fbafd960055b3fa9c0b52dd2008ff91c6c8c7e2a",
+    "bytes": 2556301,
+    "versoes": [
+      {
+        "arquivo": "public/media/robo-orbita.webp",
+        "bytes": 261344,
+        "dimensoes": [
+          1672,
+          941
+        ]
+      },
+      {
+        "arquivo": "public/media/robo-orbita-840.webp",
+        "bytes": 99296,
+        "dimensoes": [
+          840,
+          473
+        ]
+      }
+    ]
+  }
+]
